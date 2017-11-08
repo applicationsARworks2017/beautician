@@ -118,11 +118,11 @@ public class Categories extends AppCompatActivity {
                         }
                     }
                     if (sb.length() <= 0) {
-                        SPSignup.et_category.setText("");
+                        //SPSignup.et_category.setText("");
                         Categories.this.finish();
                     } else {
-                        SPSignup.et_category.setText(sb.toString().trim().substring(0, sb.length() - 1));
-                        SPSignup.selected_category_id=sb_id.toString().trim().substring(0,sb_id.length()-1);
+                        //SPSignup.et_category.setText(sb.toString().trim().substring(0, sb.length() - 1));
+                        //SPSignup.selected_category_id=sb_id.toString().trim().substring(0,sb_id.length()-1);
                         Categories.this.finish();
                     }
 

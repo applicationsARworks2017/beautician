@@ -21,6 +21,10 @@ import androidapp.com.sapplication.SplashScreen;
 public class Constants {
     public static String ONLINEURL="http://applicationworld.net/beautician/";
     public static String CATEGORYLIST="categories/index.json";
+    public static String USER_REGISTRATION="users/add.json";
+    public static String SHOP_REGISTRATION="shops/add.json";
+    public static String LOGIN_USER="users/loginCheck.json";
+    public static String LOGIN_SHOP="shops/loginCheck.json";
 
     public static void noInternetDialouge(Context _context,String Message){
         AlertDialog.Builder builder = new AlertDialog.Builder(_context);
