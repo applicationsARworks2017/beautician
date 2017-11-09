@@ -20,6 +20,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -34,7 +35,10 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.util.ArrayList;
 
+import androidapp.com.sapplication.Pojo.SpList;
+import androidapp.com.sapplication.Pojo.User;
 import androidapp.com.sapplication.R;
 import androidapp.com.sapplication.Tabs.CostumerSignup;
 import androidapp.com.sapplication.Utils.Constants;
@@ -49,7 +53,8 @@ public class Login_Activity extends AppCompatActivity {
     EditText et_phone,et_password;
     ProgressBar login_loader;
     RadioButton radioButton;
-
+    ArrayList<User> userlist;
+    ArrayList<SpList> splist;
     String[] PERMISSIONS = {Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION,};
 
     @Override
@@ -63,6 +68,8 @@ public class Login_Activity extends AppCompatActivity {
         tv_forgotpassword=(TextView)findViewById(R.id.tv_forgotpassword);
         radio_user_type=(RadioGroup)findViewById(R.id.radio_user_type);
         lin_signin=(LinearLayout)findViewById(R.id.lin_signin);
+        userlist=new ArrayList<>();
+        splist=new ArrayList<>();
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             // here it is checking whether the permission is granted previously or not
             if (!hasPermissions(this, PERMISSIONS)) {
@@ -112,7 +119,7 @@ public class Login_Activity extends AppCompatActivity {
 
                 /*Toast.makeText(Login_Activity.this,
                         radioButton.getText(), Toast.LENGTH_SHORT).show();*/
-                if(radioButton.getText().toString().trim().contains("Consumer")){
+                if(radioButton.getText().toString().trim().contains("Costumer")){
                     Checklogin("user");
                 }
                 else{
@@ -131,20 +138,25 @@ public class Login_Activity extends AppCompatActivity {
     }
 
     private void Checklogin(String type) {
-        String login_phn_num=et_phone.getText().toString().trim();
-        String login_phn_pass=et_password.getText().toString().trim();
         if(type.contentEquals("user")) {
-            new LoginAsyntask().execute(login_phn_num, login_phn_pass);
+            String login_user_phn_num=et_phone.getText().toString().trim();
+            String login_user_phn_pass=et_password.getText().toString().trim();
+            new LoginUserAsyntask().execute(login_user_phn_num, login_user_phn_pass);
         }
         else{
+            String login_sp_phn_num=et_phone.getText().toString().trim();
+            String login_sp_phn_pass=et_password.getText().toString().trim();
+            new LoginSPAsyntask().execute(login_sp_phn_num, login_sp_phn_pass);
 
         }
     }
 
-    private class LoginAsyntask extends AsyncTask<String, Void, Void> {
+    private class LoginUserAsyntask extends AsyncTask<String, Void, Void> {
 
         private static final String TAG = "SynchMobnum";
-        String server_message,id;
+        String server_message;
+        String id,name,email,mobile,photo,created_dt,modified_dt,usertype;
+
         int server_status;
 
         @Override
@@ -163,7 +175,7 @@ public class Login_Activity extends AppCompatActivity {
                 InputStream in = null;
                 int resCode = -1;
 
-                String link = Constants.LOGIN_USER ;
+                String link =Constants.ONLINEURL+ Constants.LOGIN_USER ;
                 URL url = new URL(link);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setReadTimeout(10000);
@@ -176,8 +188,8 @@ public class Login_Activity extends AppCompatActivity {
                 conn.setRequestMethod("POST");
 
                 Uri.Builder builder = new Uri.Builder()
-                        .appendQueryParameter("address", password)
-                        .appendQueryParameter("checkin_time", phone_number);
+                        .appendQueryParameter("mobile", phone_number)
+                        .appendQueryParameter("password", password);
 
                 //.appendQueryParameter("deviceid", deviceid);
                 String query = builder.build().getEncodedQuery();
@@ -209,18 +221,182 @@ public class Login_Activity extends AppCompatActivity {
 
                 /**
                  * {
-                 "checkin_id": null,
-                 "status": 1,
-                 "message": "Successfully Checked In."
+                 "users": {
+                 "id": 20,
+                 "name": "amresh",
+                 "email": "ama@gmail.com",
+                 "mobile": "9090403050",
+                 "photo": "file15101535291311553082.jpg",
+                 "created": "2017-11-08T15:05:30+00:00",
+                 "modified": "2017-11-08T15:05:30+00:00",
+                 "usertype": "user",
+                 "message": "user available.",
+                 "status": 1
                  }
                  * */
 
                 if (response != null && response.length() > 0) {
                     JSONObject res = new JSONObject(response.trim());
-                    server_status = res.optInt("status");
+                    JSONObject j_obj=res.getJSONObject("users");
+                        id=j_obj.getString("id");
+                        name=j_obj.getString("name");
+                        email=j_obj.getString("email");
+                        mobile=j_obj.getString("mobile");
+                        photo=j_obj.getString("photo");
+                        created_dt=j_obj.getString("created");
+                        modified_dt=j_obj.getString("modified");
+                        usertype=j_obj.getString("usertype");
+                    server_status = j_obj.optInt("status");
+
+                    User user_list=new User(id,name,email,mobile,photo,created_dt,modified_dt,usertype);
+                    userlist.add(user_list);
                     if (server_status == 1) {
-                        id = res.optString("checkin_id");
-                        server_message = res.optString("message");
+                        server_message = j_obj.optString("message");
+                    } else {
+                        server_message = "Invalid Credentials";
+                    }
+                }
+                return null;
+
+            } catch (SocketTimeoutException exception) {
+                server_message = "Network Error";
+                Log.e(TAG, "SynchMobnum : doInBackground", exception);
+            } catch (ConnectException exception) {
+                server_message = "Network Error";
+                Log.e(TAG, "SynchMobnum : doInBackground", exception);
+            } catch (MalformedURLException exception) {
+                server_message = "Network Error";
+                Log.e(TAG, "SynchMobnum : doInBackground", exception);
+            } catch (IOException exception) {
+                server_message = "Network Error";
+                Log.e(TAG, "SynchMobnum : doInBackground", exception);
+            } catch (Exception exception) {
+                server_message = "Network Error";
+                Log.e(TAG, "SynchMobnum : doInBackground", exception);
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void user) {
+            super.onPostExecute(user);
+            if (server_status == 1) {
+                Intent i=new Intent(Login_Activity.this,HomeActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(i);
+            }
+        }
+    }
+
+    private class LoginSPAsyntask extends AsyncTask<String, Void, Void> {
+
+        private static final String TAG = "SynchMobnum";
+        String server_message;
+        int server_status;
+        String id,shop_name,address,latitudelongitude,photo1,photo2,photo3,email,mobile,created_dt,modified_dt;
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            // onPreExecuteTask();
+        }
+
+        @Override
+        protected Void doInBackground(String... params) {
+
+            try {
+                String phone_number = params[0];
+                String password = params[1];
+                InputStream in = null;
+                int resCode = -1;
+
+                String link =Constants.ONLINEURL+ Constants.LOGIN_SHOP;
+                URL url = new URL(link);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setReadTimeout(10000);
+                conn.setConnectTimeout(15000);
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.setDoOutput(true);
+                conn.setAllowUserInteraction(false);
+                conn.setInstanceFollowRedirects(true);
+                conn.setRequestMethod("POST");
+
+                Uri.Builder builder = new Uri.Builder()
+                        .appendQueryParameter("mobile", phone_number)
+                        .appendQueryParameter("password", password);
+
+                //.appendQueryParameter("deviceid", deviceid);
+                String query = builder.build().getEncodedQuery();
+
+                OutputStream os = conn.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(
+                        new OutputStreamWriter(os, "UTF-8"));
+                writer.write(query);
+                writer.flush();
+                writer.close();
+                os.close();
+
+                conn.connect();
+                resCode = conn.getResponseCode();
+                if (resCode == HttpURLConnection.HTTP_OK) {
+                    in = conn.getInputStream();
+                }
+                if (in == null) {
+                    return null;
+                }
+                BufferedReader reader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
+                String response = "", data = "";
+
+                while ((data = reader.readLine()) != null) {
+                    response += data + "\n";
+                }
+
+                Log.i(TAG, "Response : " + response);
+
+                /**
+                 * "shops": {
+                 "id": 7,
+                 "shopname": "an mart",
+                 "address": "Karnataka",
+                 "latitudelongitude": "13.042775499999998,77.6344609",
+                 "photo1": "file15101537521523341327.jpg",
+                 "photo2": "file1510153753279822175.jpg",
+                 "photo3": "file1510153754144948710.jpg",
+                 "email": "mgt@gmail.com",
+                 "mobile": "9999999999",
+                 "password": "amu",
+                 "created": "2017-11-08T15:09:14+00:00",
+                 "modified": "2017-11-08T15:09:14+00:00",
+                 "message": "user available.",
+                 "status": 1
+                 * */
+
+                if (response != null && response.length() > 0) {
+                    JSONObject res = new JSONObject(response.trim());
+                        JSONObject j_obj=res.getJSONObject("shops");
+                        id=j_obj.getString("id");
+                        shop_name=j_obj.getString("shopname");
+                        address=j_obj.getString("address");
+                        latitudelongitude=j_obj.getString("latitudelongitude");
+                        photo1=j_obj.getString("photo1");
+                        photo2=j_obj.getString("photo2");
+                        photo3=j_obj.getString("photo3");
+                        email=j_obj.getString("email");
+                        mobile=j_obj.getString("mobile");
+                        created_dt=j_obj.getString("created");
+                        modified_dt=j_obj.getString("modified");
+                    server_status = j_obj.optInt("status");
+                    SpList sp_list=new SpList(id,shop_name,address,latitudelongitude,photo1,photo2,photo3,
+                            email,mobile,created_dt,modified_dt);
+                    splist.add(sp_list);
+                    if (server_status == 1) {
+                        server_message = j_obj.optString("message");
 
                     } else {
                         server_message = "Invalid Credentials";
@@ -252,7 +428,11 @@ public class Login_Activity extends AppCompatActivity {
         protected void onPostExecute(Void user) {
             super.onPostExecute(user);
             if (server_status == 1) {
-
+                Intent i=new Intent(Login_Activity.this,SPHome.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(i);
             }
         }
     }
