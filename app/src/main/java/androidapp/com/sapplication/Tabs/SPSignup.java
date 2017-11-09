@@ -1,14 +1,20 @@
 package androidapp.com.sapplication.Tabs;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +32,7 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -33,7 +40,9 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import androidapp.com.sapplication.Activity.Categories;
@@ -72,9 +81,12 @@ public class SPSignup extends Fragment {
     private int server_status;
     private String server_message;
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-
-
-    RelativeLayout category_rel;
+    int imageclick;
+    private static final int CAMERA_REQUEST = 1888;
+    String imPath;
+    File imageFile,imgfile1,imgfile2,imgfile3;
+    Uri picUri=null;
+    Boolean picAvailable=false;
 
     public SPSignup() {
         // Required empty public constructor
@@ -134,22 +146,115 @@ public class SPSignup extends Fragment {
                 }
             }
         });
-        /*if(CheckInternet.getNetworkConnectivityStatus(getActivity())){
-            new getcategoryList().execute();
-        }
-        else{
-            Constants.noInternetDialouge(_context,"Kindly Check Your Internet Connection");
-        }
-        et_category.setOnClickListener(new View.OnClickListener() {
+        iv_pic1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getActivity(),Categories.class);
-                startActivity(intent);
+                imageclick=1;
+                captureImage(1);
             }
-        });*/
+        });
+        iv_pic2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imageclick=2;
+                captureImage(2);
+            }
+        });
+        iv_pic3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imageclick=3;
+                captureImage(3);
+            }
+        });
+
 
         return v;
     }
+
+    private void captureImage(int i) {
+        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+            if (cameraIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                // Create the File where the photo should go
+                File photoFile = null;
+                try {
+                    photoFile = createImageFile(i);
+                } catch (IOException ex) {
+                    // Error occurred while creating the File
+                }
+                // Continue only if the File was successfully created
+                if (photoFile != null) {
+                    Uri photoURI = FileProvider.getUriForFile(getActivity(),
+                            "androidapp.com.sapplication",
+                            photoFile);
+                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                    startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                }
+            }
+        }
+        else{
+            imPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/picture.jpg";
+            imageFile = new File(imPath);
+            picUri = Uri.fromFile(imageFile); // convert path to Uri
+            cameraIntent.putExtra( MediaStore.EXTRA_OUTPUT, picUri );
+            startActivityForResult(cameraIntent, CAMERA_REQUEST);
+        }
+
+    }
+    private File createImageFile(int i) throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir =getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        imPath = image.getAbsolutePath();
+        imageFile = new File(imPath);
+        if(i==1){
+            imgfile1=imageFile;
+        }
+        else if(i==2) {
+            imgfile2=imageFile;
+        }
+        else{
+            imgfile3=imageFile;
+        }
+        picUri = Uri.fromFile(image); // convert path to Uri
+        return image;
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
+            // imPath=picUri.getPath();
+            // Bitmap photo = (Bitmap) data.getExtras().get("data");
+            try {
+                Bitmap photo = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),picUri);
+                picAvailable=true;
+                if(imageclick==1) {
+                    iv_pic1.setImageBitmap(photo);
+                }
+                else if(imageclick==2){
+                    iv_pic2.setImageBitmap(photo);
+                }
+                else{
+                    iv_pic3.setImageBitmap(photo);
+                }
+                //    profileImage=img1.toString();
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
 
     private void validate_fields() {
         String shop_name=et_sp_name.getText().toString().trim();
@@ -257,14 +362,16 @@ public class SPSignup extends Fragment {
                 multipart.addFormField("address", _address);
                 multipart.addFormField("latitudelongitude", _latlong);
                 multipart.addFormField("usertype", "serviceprovider");
+                if(imgfile1!=null){
+                    multipart.addFilePart("photo1",imgfile1 );
+                }
+                if(imgfile2!=null){
+                    multipart.addFilePart("photo2",imgfile2 );
+                }
+                if(imgfile3!=null){
+                    multipart.addFilePart("photo3",imgfile3 );
 
-                // after completion of image work please enable this
-               /* if (imageFile != null) {
-                    multipart.addFilePart("photo", imageFile);
-                }*/
-
-
-
+                }
                 List<String> response = multipart.finish();
                 System.out.println("SERVER REPLIED:");
                 String res = "";
@@ -272,7 +379,6 @@ public class SPSignup extends Fragment {
                     res = res + line + "\n";
                 }
                 Log.i(TAG, res);
-
 
                 /*
                     "status": 1,

@@ -2,49 +2,22 @@
 <items version="2" >
 
     <item
-        is-multidex="false"
-        jar="/Users/amaresh/.android/build-cache/d7e231c0591585847d0c6f0a73c5c2f8963897c8/output/jars/classes.jar"
-        jumboMode="false"
+        is-multidex="true"
+        jar="D:\RasmitaAndroidProjects\GIT\beautician-amaresh\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
         optimize="true"
         revision="25.0.3"
-        sha1="6addaba208e21c6da776d0ca75b6b23a6ccd5499">
-        <dex dex="/Users/amaresh/Desktop/AmareshWorks/SApplication/app/build/intermediates/pre-dexed/debug/classes_2b75dfc68f19da89f625be55f81a11e8bd1c28ea.jar" />
+        sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
+        <dex dex="D:\RasmitaAndroidProjects\GIT\beautician-amaresh\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_e9d6c67145079dca3ffa256eb0d59308050afff3\classes.dex" />
     </item>
     <item
-        is-multidex="false"
-        jar="/Users/amaresh/.android/build-cache/879145928dca6199cdaa23004d7c80e1a2135ed7/output/jars/classes.jar"
-        jumboMode="false"
+        is-multidex="true"
+        jar="D:\RasmitaAndroidProjects\GIT\beautician-amaresh\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
         optimize="true"
         revision="25.0.3"
-        sha1="25438f55fc6d906a0e72f30b21487541430ede43">
-        <dex dex="/Users/amaresh/Desktop/AmareshWorks/SApplication/app/build/intermediates/pre-dexed/debug/classes_5708ab8635cf5045a2f1def00f3784817207f819.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/amaresh/.android/build-cache/94d60d222fc887c6a064550490336dbb9199c4f4/output/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.3"
-        sha1="756f6297eef79784f5e356dcd4f39865028b2bd0">
-        <dex dex="/Users/amaresh/Desktop/AmareshWorks/SApplication/app/build/intermediates/pre-dexed/debug/classes_8d6c4e0b0842600e2013beba72c72e7c2635e04f.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/amaresh/.android/build-cache/82719f2b6e79418ce05e2fa196d1ab3ad83cdf90/output/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.3"
-        sha1="44a694d4095be84c2888764b1f7256b385c030ad">
-        <dex dex="/Users/amaresh/Desktop/AmareshWorks/SApplication/app/build/intermediates/pre-dexed/debug/classes_f94b8a7d6594ea54e9892434c96c7e1f6d1cc7de.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/amaresh/.android/build-cache/ba6f37e32b03d465be2081a3cd60e58dcc589d51/output/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.3"
-        sha1="a8340f8c17337c864648c13abe1416d34c80ec14">
-        <dex dex="/Users/amaresh/Desktop/AmareshWorks/SApplication/app/build/intermediates/pre-dexed/debug/classes_9299a9f33d654673191eee840070723acf6ae633.jar" />
+        sha1="20afd7cf472ae5c7039cd36bb6248e689bad627f">
+        <dex dex="D:\RasmitaAndroidProjects\GIT\beautician-amaresh\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_9d3983e82e45810a5708f39e17bdb1eb6a1c6d27\classes.dex" />
     </item>
 
 </items>

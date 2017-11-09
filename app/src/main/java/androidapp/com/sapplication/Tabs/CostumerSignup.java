@@ -1,17 +1,24 @@
 package androidapp.com.sapplication.Tabs;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +37,7 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -71,6 +79,11 @@ public class CostumerSignup extends Fragment {
     private RelativeLayout rel_user_signup;
     private File imageFile;
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+    private static final int CAMERA_REQUEST = 1888;
+    Uri picUri = null;
+    String imPath;
+    Boolean picAvailable = false;
+    int photo_status=0;
 
     private OnFragmentInteractionListener mListener;
 
@@ -120,8 +133,81 @@ public class CostumerSignup extends Fragment {
                 }
             }
         });
+        iv_avtar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                captureImage();
+            }
+        });
 
         return v;
+    }
+
+    private void captureImage() {
+        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+            if (cameraIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                // Create the File where the photo should go
+                File photoFile = null;
+                try {
+                    photoFile = createImageFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                // Continue only if the File was successfully created
+                if (photoFile != null) {
+                    Uri photoURI = FileProvider.getUriForFile(getActivity(),
+                            "androidapp.com.sapplication",
+                            photoFile);
+                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                    startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                }
+            }
+        } else {
+            imPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/picture.jpg";
+            imageFile = new File(imPath);
+            picUri = Uri.fromFile(imageFile); // convert path to Uri
+            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, picUri);
+            startActivityForResult(cameraIntent, CAMERA_REQUEST);
+        }
+
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        imPath = image.getAbsolutePath();
+        imageFile = new File(imPath);
+        picUri = Uri.fromFile(image); // convert path to Uri
+        return image;
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
+            // imPath=picUri.getPath();
+            // Bitmap photo = (Bitmap) data.getExtras().get("data");
+            try {
+                Bitmap photo = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), picUri);
+                picAvailable = true;
+                iv_avtar.setImageBitmap(photo);
+                iv_avtar.setRotation(90);
+                photo_status=1;
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 
     private void field_validation() {
@@ -154,8 +240,28 @@ public class CostumerSignup extends Fragment {
             showSnackBar("Confirm password should equal to password");
         }
         else{
+            if(iv_avtar.getDrawable()!=null) {
+                Bitmap bitmap = ((BitmapDrawable) iv_avtar.getDrawable()).getBitmap();
+                imageFile = persistImage(bitmap, name);
+            }
             new SignUpAsyntask().execute(name,phone,email,pass);
         }
+    }
+
+    private  File persistImage(Bitmap bitmap, String name) {
+        File filesDir = getActivity().getFilesDir();
+        File imageFile = new File(filesDir, name + ".jpg");
+
+        OutputStream os;
+        try {
+            os = new FileOutputStream(imageFile);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
+            os.flush();
+            os.close();
+        } catch (Exception e) {
+            Log.e(getClass().getSimpleName(), "Error writing bitmap", e);
+        }
+        return imageFile;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -226,9 +332,6 @@ public class CostumerSignup extends Fragment {
                 if (imageFile != null) {
                     multipart.addFilePart("photo", imageFile);
                 }
-
-
-
                 List<String> response = multipart.finish();
                 System.out.println("SERVER REPLIED:");
                 String res = "";
@@ -236,7 +339,6 @@ public class CostumerSignup extends Fragment {
                     res = res + line + "\n";
                 }
                 Log.i(TAG, res);
-
 
                 /*
                     "status": 1,
