@@ -98,6 +98,7 @@
                 <android.support.v7.widget.CardView
                     android:layout_width="150dp"
                     android:layout_height="150dp"
+                    android:id="@+id/card_manageservice"
                     android:background="@color/white">
                     <ImageView
                         android:layout_width="wrap_content"
@@ -111,7 +112,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="20dp"
-                        android:text="Change Service List"
+                        android:text="Manage Services"
                         android:textColor="@color/colorPrimary"/>
                     <RelativeLayout
                         android:layout_width="30dp"
@@ -185,7 +186,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="20dp"
-                        android:text="Your Offers"
+                        android:text="Manage Offers"
                         android:textColor="@color/colorPrimary"/>
                     <RelativeLayout
                         android:layout_width="30dp"
@@ -219,7 +220,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="20dp"
-                        android:text="My Profile"
+                        android:text="Profile"
                         android:textColor="@color/colorPrimary"/>
                     <RelativeLayout
                         android:layout_width="30dp"

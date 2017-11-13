@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
+    android:id="@+id/login_rel"
     tools:context="androidapp.com.sapplication.Activity.Login_Activity">
 
     <android.support.v7.widget.CardView
@@ -84,20 +85,16 @@
                     android:id="@+id/radio_sp"
                     android:text="Service Provider"/>
             </RadioGroup>
-            <LinearLayout
+            <Button
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_alignParentBottom="true"
                 android:gravity="center"
+                android:text="Login"
+                android:textColor="@color/white"
                 android:id="@+id/lin_signin"
                 android:background="@color/colorPrimary">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
-                    android:text="Sign In" />
-            </LinearLayout>
+            </Button>
         </RelativeLayout>
     </android.support.v7.widget.CardView>
     <LinearLayout

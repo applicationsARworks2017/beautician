@@ -1,5 +1,6 @@
 package androidapp.com.sapplication.Activity;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
@@ -47,6 +48,8 @@ public class Categories extends AppCompatActivity {
     CategoryAdapter cAdapter;
     Button bt_ok,bt_cancel;
     SearchView searchView_category;
+    String page;
+    public static String category_id;
 
 
 
@@ -56,6 +59,15 @@ public class Categories extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_categories);
         cList=new ArrayList<>();
+        Bundle extras = getIntent().getExtras();
+        String userName;
+
+        if (extras != null) {
+            page = extras.getString("PAGE");
+            // and get whatever type user account id is
+        }
+
+
         bt_ok=(Button)findViewById(R.id.bt_ok);
         bt_cancel=(Button)findViewById(R.id.bt_cancel);
         loader_categoty=(ProgressBar)findViewById(R.id.loader_category);
@@ -97,35 +109,74 @@ public class Categories extends AppCompatActivity {
         bt_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                StringBuffer sb = new StringBuffer();
-                StringBuffer sb_id = new StringBuffer();
+                if(page.contentEquals("service_home")){
+                    StringBuffer sb = new StringBuffer();
+                    StringBuffer sb_id = new StringBuffer();
 
-                for (CategoryList bean : cList) {
+                    for (CategoryList bean : cList) {
                         /*if (counter<5) {
                             counter++;
                         }
                         else {
                             Toast.makeText(getApplicationContext(), "Only five please", Toast.LENGTH_SHORT).show();
                         }*/
-                    if (bean.isSelected()) {
-                        if (sb.toString().trim().contains(bean.getCategory())) {
+                        if (bean.isSelected()) {
+                            if (sb.toString().trim().contains(bean.getCategory())) {
 
-                        } else {
-                            sb.append(bean.getCategory());
-                            sb.append(",");
-                            sb_id.append(bean.getId());
-                            sb_id.append(",");
+                            } else {
+                                sb.append(bean.getCategory());
+                                sb.append(",");
+                                sb_id.append(bean.getId());
+                                sb_id.append(",");
+                            }
                         }
-                    }
-                    if (sb.length() <= 0) {
-                        //SPSignup.et_category.setText("");
-                        Categories.this.finish();
-                    } else {
-                        //SPSignup.et_category.setText(sb.toString().trim().substring(0, sb.length() - 1));
-                        //SPSignup.selected_category_id=sb_id.toString().trim().substring(0,sb_id.length()-1);
-                        Categories.this.finish();
-                    }
+                        if (sb.length() <= 0) {
+                            //SPSignup.et_category.setText("");
+                            Categories.this.finish();
+                        } else {
+                            //SPSignup.et_category.setText(sb.toString().trim().substring(0, sb.length() - 1));
+                            //SPSignup.selected_category_id=sb_id.toString().trim().substring(0,sb_id.length()-1);
+                            category_id=sb_id.toString().trim().substring(0,sb_id.length()-1);
+                            Intent intent=new Intent(Categories.this,Subcategories.class);
+                            startActivity(intent);
 
+                        }
+
+                    }
+                }
+
+                else {
+                    StringBuffer sb = new StringBuffer();
+                    StringBuffer sb_id = new StringBuffer();
+
+                    for (CategoryList bean : cList) {
+                        /*if (counter<5) {
+                            counter++;
+                        }
+                        else {
+                            Toast.makeText(getApplicationContext(), "Only five please", Toast.LENGTH_SHORT).show();
+                        }*/
+                        if (bean.isSelected()) {
+                            if (sb.toString().trim().contains(bean.getCategory())) {
+
+                            } else {
+                                sb.append(bean.getCategory());
+                                sb.append(",");
+                                sb_id.append(bean.getId());
+                                sb_id.append(",");
+                            }
+                        }
+                        if (sb.length() <= 0) {
+                            //SPSignup.et_category.setText("");
+                            Categories.this.finish();
+                        } else {
+                            //SPSignup.et_category.setText(sb.toString().trim().substring(0, sb.length() - 1));
+                            //SPSignup.selected_category_id=sb_id.toString().trim().substring(0,sb_id.length()-1);
+                            Categories.this.finish();
+
+                        }
+
+                    }
                 }
             }
         });
@@ -149,6 +200,7 @@ public class Categories extends AppCompatActivity {
                 return false;
             }
         });
+
 
     }
     private void setQuestionList(String filterText) {

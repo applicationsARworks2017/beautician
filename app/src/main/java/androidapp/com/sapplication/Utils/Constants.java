@@ -21,10 +21,19 @@ import androidapp.com.sapplication.SplashScreen;
 public class Constants {
     public static String ONLINEURL="http://applicationworld.net/beautician/";
     public static String CATEGORYLIST="categories/index.json";
+    public static String SUB_CATEGORYLIST="sub-categories/index.json";
     public static String USER_REGISTRATION="users/add.json";
     public static String SHOP_REGISTRATION="shops/add.json";
     public static String LOGIN_USER="users/loginCheck.json";
     public static String LOGIN_SHOP="shops/loginCheck.json";
+    public static String SUBCATEGORY_PRICE="ShopDetails/shopPriceList";
+
+
+    public static final String SHAREDPREFERENCE_KEY = "beautician" ;
+    public static final String USER_NAME = "username" ;
+    public static final String USER_ID = "userid" ;
+    public static final String USER_TYPE = "user_type" ;
+
 
     public static void noInternetDialouge(Context _context,String Message){
         AlertDialog.Builder builder = new AlertDialog.Builder(_context);

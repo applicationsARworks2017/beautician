@@ -4,19 +4,23 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +45,7 @@ import androidapp.com.sapplication.Pojo.SpList;
 import androidapp.com.sapplication.Pojo.User;
 import androidapp.com.sapplication.R;
 import androidapp.com.sapplication.Tabs.CostumerSignup;
+import androidapp.com.sapplication.Utils.CheckInternet;
 import androidapp.com.sapplication.Utils.Constants;
 
 import static androidapp.com.sapplication.Utils.Constants.hasPermissions;
@@ -49,12 +54,13 @@ public class Login_Activity extends AppCompatActivity {
     TextView tv_signup,tv_forgotpassword;
     RadioGroup radio_user_type;
     RadioGroup user_type;
-    LinearLayout lin_signin;
+    Button lin_signin;
     EditText et_phone,et_password;
     ProgressBar login_loader;
     RadioButton radioButton;
     ArrayList<User> userlist;
     ArrayList<SpList> splist;
+    RelativeLayout login_rel;
     String[] PERMISSIONS = {Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION,};
 
     @Override
@@ -67,7 +73,8 @@ public class Login_Activity extends AppCompatActivity {
         tv_signup=(TextView)findViewById(R.id.tv_signup);
         tv_forgotpassword=(TextView)findViewById(R.id.tv_forgotpassword);
         radio_user_type=(RadioGroup)findViewById(R.id.radio_user_type);
-        lin_signin=(LinearLayout)findViewById(R.id.lin_signin);
+        lin_signin=(Button) findViewById(R.id.lin_signin);
+        login_rel=(RelativeLayout)findViewById(R.id.login_rel);
         userlist=new ArrayList<>();
         splist=new ArrayList<>();
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -78,27 +85,6 @@ public class Login_Activity extends AppCompatActivity {
 
             }
         }
-/*
-*
-* btnDisplay.setOnClickListener(new OnClickListener() {
-
-		@Override
-		public void onClick(View v) {
-
-		        // get selected radio button from radioGroup
-			int selectedId = radioSexGroup.getCheckedRadioButtonId();
-
-			// find the radiobutton by returned id
-		        radioSexButton = (RadioButton) findViewById(selectedId);
-
-			Toast.makeText(MyAndroidAppActivity.this,
-				radioSexButton.getText(), Toast.LENGTH_SHORT).show();
-
-		}
-
-	});
-*
-* */
         tv_signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,8 +103,6 @@ public class Login_Activity extends AppCompatActivity {
                 // find the radiobutton by returned id
                 radioButton = (RadioButton) findViewById(selectedId);
 
-                /*Toast.makeText(Login_Activity.this,
-                        radioButton.getText(), Toast.LENGTH_SHORT).show();*/
                 if(radioButton.getText().toString().trim().contains("Costumer")){
                     Checklogin("user");
                 }
@@ -128,26 +112,30 @@ public class Login_Activity extends AppCompatActivity {
                 }
             }
         });
-        tv_forgotpassword.setOnClickListener(new View.OnClickListener() {
+        /*tv_forgotpassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(Login_Activity.this,SPHome.class);
                 startActivity(intent);
             }
-        });
+        });*/
     }
 
     private void Checklogin(String type) {
-        if(type.contentEquals("user")) {
-            String login_user_phn_num=et_phone.getText().toString().trim();
-            String login_user_phn_pass=et_password.getText().toString().trim();
-            new LoginUserAsyntask().execute(login_user_phn_num, login_user_phn_pass);
+        if(CheckInternet.getNetworkConnectivityStatus(Login_Activity.this)) {
+            if (type.contentEquals("user")) {
+                String login_user_phn_num = et_phone.getText().toString().trim();
+                String login_user_phn_pass = et_password.getText().toString().trim();
+                new LoginUserAsyntask().execute(login_user_phn_num, login_user_phn_pass);
+            } else {
+                String login_sp_phn_num = et_phone.getText().toString().trim();
+                String login_sp_phn_pass = et_password.getText().toString().trim();
+                new LoginSPAsyntask().execute(login_sp_phn_num, login_sp_phn_pass);
+
+            }
         }
         else{
-            String login_sp_phn_num=et_phone.getText().toString().trim();
-            String login_sp_phn_pass=et_password.getText().toString().trim();
-            new LoginSPAsyntask().execute(login_sp_phn_num, login_sp_phn_pass);
-
+            Constants.noInternetDialouge(Login_Activity.this,"No Intrnet Connection");
         }
     }
 
@@ -257,19 +245,6 @@ public class Login_Activity extends AppCompatActivity {
                     }
                 }
                 return null;
-
-            } catch (SocketTimeoutException exception) {
-                server_message = "Network Error";
-                Log.e(TAG, "SynchMobnum : doInBackground", exception);
-            } catch (ConnectException exception) {
-                server_message = "Network Error";
-                Log.e(TAG, "SynchMobnum : doInBackground", exception);
-            } catch (MalformedURLException exception) {
-                server_message = "Network Error";
-                Log.e(TAG, "SynchMobnum : doInBackground", exception);
-            } catch (IOException exception) {
-                server_message = "Network Error";
-                Log.e(TAG, "SynchMobnum : doInBackground", exception);
             } catch (Exception exception) {
                 server_message = "Network Error";
                 Log.e(TAG, "SynchMobnum : doInBackground", exception);
@@ -282,11 +257,20 @@ public class Login_Activity extends AppCompatActivity {
         protected void onPostExecute(Void user) {
             super.onPostExecute(user);
             if (server_status == 1) {
+                SharedPreferences sharedPreferences = Login_Activity.this.getSharedPreferences(Constants.SHAREDPREFERENCE_KEY, 0); // 0 - for private mode
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString(Constants.USER_ID, id);
+                editor.putString(Constants.USER_TYPE, "custumer");
+                editor.commit();
                 Intent i=new Intent(Login_Activity.this,HomeActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(i);
+            }
+            else{
+                showSnackBar(server_message);
+
             }
         }
     }
@@ -404,18 +388,6 @@ public class Login_Activity extends AppCompatActivity {
                 }
                 return null;
 
-            } catch (SocketTimeoutException exception) {
-                server_message = "Network Error";
-                Log.e(TAG, "SynchMobnum : doInBackground", exception);
-            } catch (ConnectException exception) {
-                server_message = "Network Error";
-                Log.e(TAG, "SynchMobnum : doInBackground", exception);
-            } catch (MalformedURLException exception) {
-                server_message = "Network Error";
-                Log.e(TAG, "SynchMobnum : doInBackground", exception);
-            } catch (IOException exception) {
-                server_message = "Network Error";
-                Log.e(TAG, "SynchMobnum : doInBackground", exception);
             } catch (Exception exception) {
                 server_message = "Network Error";
                 Log.e(TAG, "SynchMobnum : doInBackground", exception);
@@ -428,12 +400,31 @@ public class Login_Activity extends AppCompatActivity {
         protected void onPostExecute(Void user) {
             super.onPostExecute(user);
             if (server_status == 1) {
+
+                SharedPreferences sharedPreferences = Login_Activity.this.getSharedPreferences(Constants.SHAREDPREFERENCE_KEY, 0); // 0 - for private mode
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString(Constants.USER_ID, id);
+                editor.putString(Constants.USER_TYPE, "service_provider");
+
+                editor.commit();
+
                 Intent i=new Intent(Login_Activity.this,SPHome.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(i);
             }
+            else{
+                showSnackBar(server_message);
+            }
         }
+    }
+    void showSnackBar(String message){
+        Snackbar snackbar = Snackbar
+                .make(login_rel, message, Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundColor(Color.parseColor("#7a2da6"));
+
+        snackbar.show();
     }
 }

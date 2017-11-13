@@ -23,6 +23,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
+
         <activity
             android:name=".SplashScreen"
             android:theme="@style/NoAction">
@@ -44,7 +45,15 @@
         <activity
             android:name=".Activity.SPHome"
             android:label="Dashboard" />
-        <activity android:name=".Activity.Categories"></activity>
+        <activity android:name=".Activity.Categories"
+            android:label="Service List"
+            android:parentActivityName=".Activity.SPHome"/>
+        <activity
+            android:name=".Activity.PostActivity"
+            android:label="Post for service"
+            android:parentActivityName=".Activity.HomeActivity" />
+        <activity android:name=".Activity.Subcategories"
+            android:label="Service Details"></activity>
     </application>
 
 </manifest>

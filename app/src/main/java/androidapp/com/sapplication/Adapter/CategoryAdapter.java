@@ -13,7 +13,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import androidapp.com.sapplication.Activity.Categories;
+import androidapp.com.sapplication.Activity.Subcategories;
 import androidapp.com.sapplication.Pojo.CategoryList;
+import androidapp.com.sapplication.Pojo.SubCategoryList;
 import androidapp.com.sapplication.R;
 
 /**
@@ -28,6 +30,8 @@ public class CategoryAdapter extends BaseAdapter {
         this._context=categories;
         this.categoryLists=cList;
     }
+
+
 
     @Override
     public int getCount() {
