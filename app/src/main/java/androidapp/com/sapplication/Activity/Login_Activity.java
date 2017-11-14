@@ -380,7 +380,7 @@ public class Login_Activity extends AppCompatActivity {
                             email,mobile,created_dt,modified_dt);
                     splist.add(sp_list);
                     if (server_status == 1) {
-                        server_message = j_obj.optString("message");
+                        server_message = "Successful";
 
                     } else {
                         server_message = "Invalid Credentials";
