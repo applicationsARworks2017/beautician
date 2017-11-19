@@ -45,15 +45,20 @@
         <activity
             android:name=".Activity.SPHome"
             android:label="Dashboard" />
-        <activity android:name=".Activity.Categories"
+        <activity
+            android:name=".Activity.Categories"
             android:label="Service List"
-            android:parentActivityName=".Activity.SPHome"/>
+            android:parentActivityName=".Activity.SPHome" />
         <activity
             android:name=".Activity.PostActivity"
             android:label="Post for service"
             android:parentActivityName=".Activity.HomeActivity" />
-        <activity android:name=".Activity.Subcategories"
-            android:label="Service Details"></activity>
+        <activity
+            android:name=".Activity.Subcategories"
+            android:label="Service Details" />
+        <activity android:name=".Activity.SPProfile" />
+        <activity android:name=".Activity.Manageservice" />
+        <activity android:name=".Activity.RequestSubcategories"></activity>
     </application>
 
 </manifest>

@@ -136,7 +136,7 @@ public class Subcategories extends AppCompatActivity {
 * GET SUBCATEGORY LIST ASYNTASK*/
     private class getsubcategoryList extends AsyncTask<String, Void, Void> {
 
-        private static final String TAG = "GET SUB CATEGORY WITH PRICE";
+        private static final String TAG = "GET SUB CATEGORY ";
 
         @Override
         protected void onPreExecute() {
@@ -151,7 +151,7 @@ public class Subcategories extends AppCompatActivity {
             try {
                 InputStream in = null;
                 int resCode = -1;
-                String link = Constants.ONLINEURL + Constants.SUBCATEGORY_PRICE;
+                String link = Constants.ONLINEURL + Constants.SUB_CATEGORYLIST;
                 URL url = new URL(link);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setReadTimeout(10000);
@@ -164,9 +164,9 @@ public class Subcategories extends AppCompatActivity {
                 conn.setRequestMethod("POST");
 
                 Uri.Builder builder = new Uri.Builder()
-                        .appendQueryParameter("category_id", Categories.category_id)
-                        .appendQueryParameter("shop_id", shop_id)
-                        .appendQueryParameter("page", "1");
+                        .appendQueryParameter("category_id", Categories.category_id);
+                        /*.appendQueryParameter("shop_id", shop_id)
+                        .appendQueryParameter("page", "1");*/
                 String query = builder.build().getEncodedQuery();
 
                 OutputStream os = conn.getOutputStream();
@@ -197,19 +197,15 @@ public class Subcategories extends AppCompatActivity {
                 /*
                 *
                 * {
-    {
-    {
-    "shopDetails": [
+   {
+    "subCategories": [
         {
             "id": 1,
-            "shop_id": 1,
             "category_id": 1,
-            "sub_category_id": 1,
-            "price": 50,
-            "created": "2017-11-05T08:19:52+00:00",
-            "modified": "2017-11-05T08:19:52+00:00",
-            "sub_category": "first sub category",
-            "category": "test"
+            "title": "first sub category",
+            "is_enable": "Y",
+            "created": "30-10-2017",
+            "modified": null
         },
                     },*/
 
@@ -217,7 +213,7 @@ public class Subcategories extends AppCompatActivity {
                     JSONObject res = new JSONObject(response.trim());
                     // server_status=res.getInt("status");
                     scList.clear();
-                    JSONArray categoryListArray = res.getJSONArray("shopDetails");
+                    JSONArray categoryListArray = res.getJSONArray("subCategories");
                     if(categoryListArray.length()<=0){
                         server_message="No Data Found";
 
@@ -227,12 +223,9 @@ public class Subcategories extends AppCompatActivity {
                         for (int i = 0; i < categoryListArray.length(); i++) {
                             JSONObject o_list_obj = categoryListArray.getJSONObject(i);
                             String id = o_list_obj.getString("id");
-                            String sub_category_id = o_list_obj.getString("sub_category_id");
-                            String price = o_list_obj.getString("price");
-                            String subcategory = o_list_obj.getString("sub_category");
-                            String category = o_list_obj.getString("category");
+                            String subcategory = o_list_obj.getString("title");
                             String category_id = o_list_obj.getString("category_id");
-                            SubCategoryList list1 = new SubCategoryList(id,sub_category_id,price,category,subcategory,category_id);
+                            SubCategoryList list1 = new SubCategoryList(id,subcategory,category_id);
                             scList.add(list1);
                         }
                     }
@@ -263,6 +256,9 @@ public class Subcategories extends AppCompatActivity {
             loader_sub_category.setVisibility(View.GONE);
             swipe_subcategory.setVisibility(View.VISIBLE);
         }
+    }
+    public void onBackPressed() {
+        finish();
     }
 
 }

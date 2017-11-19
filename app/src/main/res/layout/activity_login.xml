@@ -33,7 +33,7 @@
                     android:id="@+id/et_phn"
                     android:layout_marginLeft="10dp"
                     android:layout_width="180dp"
-                    android:maxLength="30"
+                    android:maxLength="10"
                     android:paddingLeft="10dp"
                     android:inputType="phone"
                     android:singleLine="true"

@@ -5,7 +5,16 @@ package androidapp.com.sapplication.Pojo;
  */
 
 public class SubCategoryList {
-    String id,sub_category_id,price,category,subcategory,category_id;
+    String id,category,subcategory,category_id;
+    private boolean selected;
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+
 
     public String getId() {
         return id;
@@ -30,38 +39,15 @@ public class SubCategoryList {
     public void setCategory_id(String category_id) {
         this.category_id = category_id;
     }
-
-    public String getSub_category_id() {
-        return sub_category_id;
-    }
-
-    public void setSub_category_id(String sub_category_id) {
-        this.sub_category_id = sub_category_id;
-    }
-
-    public String getPrice() {
-        return price;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
-    }
-
     public String getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public SubCategoryList(String id, String subcategory, String category_id, String sub_category_id, String price, String category) {
+    public SubCategoryList(String id, String subcategory, String category_id) {
         this.id=id;
         this.subcategory=subcategory;
         this.category_id=category_id;
-        this.sub_category_id=sub_category_id;
-        this.price=price;
-        this.category=category;
+
 
 
     }

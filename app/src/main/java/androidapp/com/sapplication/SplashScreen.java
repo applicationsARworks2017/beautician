@@ -44,7 +44,7 @@ public class SplashScreen extends AppCompatActivity {
                 }, 3000);
             }
             else{
-                if(user_type.contentEquals("customer")){
+                if(user_type.contentEquals("custumer")){
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {

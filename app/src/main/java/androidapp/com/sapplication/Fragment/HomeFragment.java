@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import androidapp.com.sapplication.Activity.Categories;
 import androidapp.com.sapplication.Activity.PostActivity;
 import androidapp.com.sapplication.R;
 
@@ -66,7 +67,7 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v= inflater.inflate(R.layout.fragment_home, container, false);
@@ -74,7 +75,8 @@ public class HomeFragment extends Fragment {
         rel_requsetservice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getActivity(),PostActivity.class);
+                Intent intent=new Intent(getActivity(),Categories.class);
+                intent.putExtra("PAGE","service_request");
                 startActivity(intent);
             }
         });

@@ -49,7 +49,7 @@ public class Categories extends AppCompatActivity {
     Button bt_ok,bt_cancel;
     SearchView searchView_category;
     String page;
-    public static String category_id;
+    public static String category_id,category_name;
 
 
 
@@ -145,7 +145,7 @@ public class Categories extends AppCompatActivity {
                     }
                 }
 
-                else {
+                else if(page.contentEquals("service_request")) {
                     StringBuffer sb = new StringBuffer();
                     StringBuffer sb_id = new StringBuffer();
 
@@ -172,8 +172,10 @@ public class Categories extends AppCompatActivity {
                         } else {
                             //SPSignup.et_category.setText(sb.toString().trim().substring(0, sb.length() - 1));
                             //SPSignup.selected_category_id=sb_id.toString().trim().substring(0,sb_id.length()-1);
-                            Categories.this.finish();
-
+                            category_id=sb_id.toString().trim().substring(0,sb_id.length()-1);
+                            category_name=sb.toString().trim().substring(0,sb.length()-1);
+                            Intent intent=new Intent(Categories.this,RequestSubcategories.class);
+                            startActivity(intent);
                         }
 
                     }

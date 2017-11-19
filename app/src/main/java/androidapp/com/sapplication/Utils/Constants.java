@@ -27,6 +27,9 @@ public class Constants {
     public static String LOGIN_USER="users/loginCheck.json";
     public static String LOGIN_SHOP="shops/loginCheck.json";
     public static String SUBCATEGORY_PRICE="ShopDetails/shopPriceList";
+    public static String PRICE_LIST="ShopDetails/shopPriceListNew.json";
+    public static String PRICE_SET="ShopDetails/add.json";
+    public static String SERVICE_REQUEST="service-requests/add.json";
 
 
     public static final String SHAREDPREFERENCE_KEY = "beautician" ;
