@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/categorylist_rel"
-    tools:context="androidapp.com.sapplication.Activity.Categories">
+    tools:context="beautician.com.sapplication.Activity.Categories">
     <ProgressBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -23,6 +23,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/searchView_category"
         android:layout_marginBottom="60dp"
+        android:divider="@null"
         android:id="@+id/lv_category">
     </ListView>
     <TextView

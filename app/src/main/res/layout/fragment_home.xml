@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="androidapp.com.sapplication.Fragment.HomeFragment">
+    tools:context="beautician.com.sapplication.Fragment.HomeFragment">
 
 
     <ScrollView
@@ -64,6 +64,7 @@
                 android:layout_width="match_parent"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
+                android:id="@+id/rel_searchfrmhome"
                 android:layout_marginTop="20dp"
                 android:layout_height="100dp">
                 <ImageView
@@ -171,6 +172,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="20dp"
+                android:id="@+id/amazing_offers"
                 android:layout_height="100dp">
                 <ImageView
                     android:layout_width="36dp"

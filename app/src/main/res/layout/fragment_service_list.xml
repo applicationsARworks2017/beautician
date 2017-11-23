@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context="androidapp.com.sapplication.Fragment.ServiceList">
+    tools:context="beautician.com.sapplication.Fragment.ServiceList">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">

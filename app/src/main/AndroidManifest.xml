@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="androidapp.com.sapplication">
+    package="beautician.com.sapplication">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <provider
             android:name=".Utils.GenericFileProvider"
-            android:authorities="androidapp.com.sapplication"
+            android:authorities="beautician.com.sapplication"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -26,6 +29,7 @@
 
         <activity
             android:name=".SplashScreen"
+            android:screenOrientation="portrait"
             android:theme="@style/NoAction">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,30 +39,74 @@
         </activity>
         <activity
             android:name=".Activity.Login_Activity"
-            android:label="Login" />
+            android:label="Login"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.SignupActivity"
             android:label="Sign Up"
             android:parentActivityName=".Activity.Login_Activity"
+            android:screenOrientation="portrait"
             android:theme="@style/MyMaterialTheme.Base" />
-        <activity android:name=".Activity.HomeActivity" />
+        <activity
+            android:name=".Activity.HomeActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.SPHome"
-            android:label="Dashboard" />
+            android:label="Dashboard"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.Categories"
             android:label="Service List"
-            android:parentActivityName=".Activity.SPHome" />
+            android:parentActivityName=".Activity.SPHome"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.PostActivity"
             android:label="Post for service"
-            android:parentActivityName=".Activity.HomeActivity" />
+            android:parentActivityName=".Activity.HomeActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.Subcategories"
-            android:label="Service Details" />
-        <activity android:name=".Activity.SPProfile" />
-        <activity android:name=".Activity.Manageservice" />
-        <activity android:name=".Activity.RequestSubcategories"></activity>
+            android:label="Service Details"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.SPProfile"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.Manageservice"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.RequestSubcategories"
+            android:label="Detail List"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.SearchShop"
+            android:label="Search"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.SearchShopList"
+            android:label="Search List"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Activity.CategoriesRequest" />
+        <activity
+            android:name=".Activity.CheckPost"
+            android:label="Public Posts"
+            android:parentActivityName=".Activity.SPHome" />
+        <activity
+            android:name=".Activity.SpProposal"
+            android:label="Proposals"
+            android:parentActivityName=".Activity.SPHome" />
+        <activity
+            android:name=".Activity.Wallet"
+            android:label="Wallet"
+            android:parentActivityName=".Activity.SPHome" />
+        <activity
+            android:name=".Activity.Offer_creation"
+            android:label="Compose Offer"
+            android:parentActivityName=".Activity.SPHome" />
+        <activity android:name=".Activity.OfferSet"
+            android:label="Offers"
+            android:parentActivityName=".Activity.HomeActivity">
+        </activity>
     </application>
 
 </manifest>
