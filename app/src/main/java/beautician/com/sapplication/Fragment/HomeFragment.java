@@ -15,6 +15,7 @@ import beautician.com.sapplication.Activity.CategoriesRequest;
 import beautician.com.sapplication.Activity.OfferSet;
 import beautician.com.sapplication.Activity.Offer_creation;
 import beautician.com.sapplication.Activity.SearchShop;
+import beautician.com.sapplication.Activity.SpProposal;
 import beautician.com.sapplication.R;
 
 /**
@@ -30,7 +31,7 @@ public class HomeFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private RelativeLayout rel_requsetservice,rel_searchfrmhome,amazing_offers;
+    private RelativeLayout rel_requsetservice,rel_searchfrmhome,amazing_offers,user_propsal;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -77,6 +78,7 @@ public class HomeFragment extends Fragment {
         rel_requsetservice=(RelativeLayout)v.findViewById(R.id.rel_requsetservice);
         rel_searchfrmhome=(RelativeLayout)v.findViewById(R.id.rel_searchfrmhome);
         amazing_offers=(RelativeLayout)v.findViewById(R.id.amazing_offers);
+        user_propsal=(RelativeLayout)v.findViewById(R.id.user_propsal);
         rel_requsetservice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,6 +98,15 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(getActivity(),OfferSet.class);
+                intent.putExtra("PAGE","user_side");
+                startActivity(intent);
+            }
+        });
+        user_propsal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getActivity(),SpProposal.class);
+                intent.putExtra("PAGE","user_side");
                 startActivity(intent);
             }
         });

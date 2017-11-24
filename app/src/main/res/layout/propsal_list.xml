@@ -25,11 +25,23 @@
                 android:layout_marginRight="40dp"
                 android:layout_below="@id/propsal_hd"
                 android:id="@+id/view_details"
-                android:text="View Details"
+                android:text="Service Details"
                 android:textColor="@color/colorPrimaryDark"
                 android:textStyle="italic"
                 android:layout_marginLeft="15dp"
                 android:layout_marginBottom="5dp"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="5dp"
+                android:padding="10dp"
+                android:visibility="gone"
+                android:id="@+id/im_agree"
+                android:layout_alignParentRight="true"
+                android:layout_toLeftOf="@id/im_reply"
+                android:layout_below="@id/view_details"
+                />
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

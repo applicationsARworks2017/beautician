@@ -5,6 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="beautician.com.sapplication.Activity.Offer_creation">
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        android:id="@+id/offer_loader"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="vertical"
@@ -25,7 +31,7 @@
             android:layout_marginLeft="40dp"
             android:inputType="textMultiLine"
             android:lines="8"
-            android:id="@+id/et_contentheading"
+            android:id="@+id/et_content"
             android:minLines="4"
             android:paddingLeft="5dp"
             android:paddingRight="2dp"
@@ -43,6 +49,7 @@
             android:layout_marginRight="40dp"
             android:background="@color/colorPrimaryDark"
             android:text="submit"
+            android:id="@+id/submit"
             android:textColor="@color/white"/>
     </LinearLayout>
 </RelativeLayout>

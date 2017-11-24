@@ -9,8 +9,12 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.util.Log;
 import android.widget.ImageView;
 
+import java.text.DecimalFormat;
+
+import beautician.com.sapplication.Activity.HomeActivity;
 import beautician.com.sapplication.R;
 
 /**
@@ -32,6 +36,11 @@ public class Constants {
     public static String ADD_PROPOSAL="service-purposal/add.json";
     public static String PROPOSALS="service-purposal/index.json";
     public static String SERVICE_REQUEST_LIST="service-requests/serviceRequestList.json";
+    public static String VIEW_PROPSAL="ServiceRequests/view.json";
+    public static String CREATE_OFFER="offers/add.json";
+    public static String LIST_OFFER="offers/index.json";
+    public static String SEARCH_SHOP="ShopDetails/shopList";
+    public static String TO_SHOP_REQUEST="service-indivisual-requests/add.json";
 
 
     public static final String SHAREDPREFERENCE_KEY = "beautician" ;
@@ -73,5 +82,30 @@ public class Constants {
             }
         }
         return true;
+    }
+    public static double CalculationByDistance(Double latitude,Double longitude) {
+        int Radius = 6371;// radius of earth in Km
+        double lat1 =latitude;
+        double lat2 =longitude;
+        double lon1 = Double.valueOf(HomeActivity.latitude);
+        double lon2 =Double.valueOf(HomeActivity.longitude);
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+                + Math.cos(Math.toRadians(lat1))
+                * Math.cos(Math.toRadians(lat2)) * Math.sin(dLon / 2)
+                * Math.sin(dLon / 2);
+        double c = 2 * Math.asin(Math.sqrt(a));
+        double valueResult = Radius * c;
+        double km = valueResult / 1;
+        DecimalFormat newFormat = new DecimalFormat("####");
+        int kmInDec = Integer.valueOf(newFormat.format(km));
+        double orgKmeter = valueResult % 1000;
+        int meterInDec = Integer.valueOf(newFormat.format(orgKmeter));
+        Log.i("Radius Value", "" + valueResult + "   KM  " + kmInDec
+                + " Meter   " + meterInDec);
+
+        //return Radius * c;
+        return meterInDec;
     }
 }

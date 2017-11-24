@@ -86,7 +86,9 @@
             android:name=".Activity.SearchShopList"
             android:label="Search List"
             android:screenOrientation="portrait" />
-        <activity android:name=".Activity.CategoriesRequest" />
+        <activity
+            android:name=".Activity.CategoriesRequest"
+            android:label="Choose Service" />
         <activity
             android:name=".Activity.CheckPost"
             android:label="Public Posts"
@@ -103,10 +105,17 @@
             android:name=".Activity.Offer_creation"
             android:label="Compose Offer"
             android:parentActivityName=".Activity.SPHome" />
-        <activity android:name=".Activity.OfferSet"
+        <activity
+            android:name=".Activity.OfferSet"
             android:label="Offers"
-            android:parentActivityName=".Activity.HomeActivity">
-        </activity>
+            android:parentActivityName=".Activity.HomeActivity" />
+        <activity
+            android:name=".Activity.PropsalView"
+            android:label="Propsal Detail"
+            android:parentActivityName=".Activity.SPHome" />
+        <activity android:name=".Activity.IndividualRequest"
+            android:label="Request for service"
+            android:parentActivityName=".Activity.HomeActivity"></activity>
     </application>
 
 </manifest>

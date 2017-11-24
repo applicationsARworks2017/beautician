@@ -47,11 +47,22 @@ public class SearchShop extends AppCompatActivity {
                     Toast.makeText(SearchShop.this,"Please enter text for search",Toast.LENGTH_SHORT).show();
                 }
                 else{
+                    if(CheckInternet.getNetworkConnectivityStatus(SearchShop.this)){
                     Intent intent=new Intent(SearchShop.this,SearchShopList.class);
+                        intent.putExtra("SEARCH",et_searchText.getText().toString().trim());
                     startActivity(intent);
+                    }
+                    else{
+                        Constants.noInternetDialouge(SearchShop.this,"No Internet");
+                    }
+
+                   /* Intent intent=new Intent(SearchShop.this,SearchShopList.class);
+                    startActivity(intent);*/
                 }
             }
         });
     }
+
+
 
 }

@@ -6,7 +6,32 @@
     android:layout_height="match_parent"
     android:background="@color/background"
     tools:context="beautician.com.sapplication.Activity.SearchShopList">
-    <android.support.v7.widget.CardView
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/swipe_searchshop">
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@null"
+            android:id="@+id/lv_searchshop">
+        </ListView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Not found"
+        android:id="@+id/blanck_search"
+        android:visibility="gone"
+        android:layout_centerInParent="true"/>
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        android:id="@+id/loader_search"/>
+
+<!--    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_marginTop="5sp">
@@ -92,5 +117,5 @@
                 android:textColor="@color/white"
                 android:text="Request"/>
         </LinearLayout>
-    </android.support.v7.widget.CardView>
+    </android.support.v7.widget.CardView>-->
 </RelativeLayout>

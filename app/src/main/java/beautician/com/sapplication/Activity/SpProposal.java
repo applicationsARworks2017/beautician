@@ -42,12 +42,19 @@ public class SpProposal extends AppCompatActivity {
     ListView lv_propsals;
     ArrayList<Proposals> pList;
     PropsalAdapter propsalAdapter;
+    String page;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sp_proposal);
         pList=new ArrayList<>();
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            page = extras.getString("PAGE");
+            // and get whatever type user account id is
+        }
         loader_propsals=(ProgressBar)findViewById(R.id.loader_propsals);
         swipe_propsal=(SwipeRefreshLayout)findViewById(R.id.swip_propsal);
         lv_propsals=(ListView)findViewById(R.id.proposal_list);
@@ -96,9 +103,15 @@ public class SpProposal extends AppCompatActivity {
                 conn.setAllowUserInteraction(false);
                 conn.setInstanceFollowRedirects(true);
                 conn.setRequestMethod("POST");
-
-                Uri.Builder builder = new Uri.Builder()
-                        .appendQueryParameter("shop_id", user_id);
+                Uri.Builder builder=null;
+                if(page.contentEquals("user_side")){
+                    builder = new Uri.Builder()
+                            .appendQueryParameter("user_id", user_id);
+                }
+                else {
+                     builder = new Uri.Builder()
+                            .appendQueryParameter("shop_id", user_id);
+                }
                 String query = builder.build().getEncodedQuery();
 
                 OutputStream os = conn.getOutputStream();
@@ -188,7 +201,7 @@ public class SpProposal extends AppCompatActivity {
         protected void onPostExecute(Void data) {
             super.onPostExecute(data);
             if(server_status==1) {
-                propsalAdapter = new  PropsalAdapter (SpProposal.this,pList );
+                propsalAdapter = new  PropsalAdapter (SpProposal.this,pList ,page);
                 lv_propsals.setAdapter(propsalAdapter);
             }
             else{
