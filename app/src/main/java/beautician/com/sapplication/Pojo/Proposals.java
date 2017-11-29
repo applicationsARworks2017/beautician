@@ -5,7 +5,7 @@ package beautician.com.sapplication.Pojo;
  */
 
 public class Proposals {
-    String id,service_request_id,remarks,category,status,created;
+    String id,service_request_id,remarks,category,status,created,shop_id, shop_name;
 
     public String getId() {
         return id;
@@ -55,12 +55,30 @@ public class Proposals {
         this.created = created;
     }
 
-    public Proposals(String id, String service_request_id, String remarks, String status, String created) {
+    public String getShop_id() {
+        return shop_id;
+    }
+
+    public void setShop_id(String shop_id) {
+        this.shop_id = shop_id;
+    }
+
+    public String getShop_name() {
+        return shop_name;
+    }
+
+    public void setShop_name(String shop_name) {
+        this.shop_name = shop_name;
+    }
+
+    public Proposals(String id, String service_request_id, String remarks, String status, String created, String shop_id, String shop_name) {
         this.id=id;
         this.service_request_id=service_request_id;
         this.remarks=remarks;
         this.status=status;
         this.created=created;
+        this.shop_id=shop_id;
+        this.shop_name=shop_name;
 
     }
 }

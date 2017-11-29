@@ -37,6 +37,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAfTnMETsCDM_RlvvZTU2jH1qnObvGjPMA" />
+
         <activity
             android:name=".Activity.Login_Activity"
             android:label="Login"
@@ -113,9 +121,53 @@
             android:name=".Activity.PropsalView"
             android:label="Propsal Detail"
             android:parentActivityName=".Activity.SPHome" />
-        <activity android:name=".Activity.IndividualRequest"
+        <activity
+            android:name=".Activity.IndividualRequest"
             android:label="Request for service"
-            android:parentActivityName=".Activity.HomeActivity"></activity>
+            android:parentActivityName=".Activity.HomeActivity" />
+        <activity
+            android:name=".Activity.MapActivity"
+            android:label="Choose Address" />
+        <activity android:name=".Activity.SpRequestHome" />
+        <activity
+            android:name=".Activity.CheckIndividualPost"
+            android:label="Service Requests" />
+
+        <!-- Firebase Notifications -->
+        <service android:name=".Firebase.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".Firebase.MyFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".Firebase.MyJobService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
+            </intent-filter>
+        </service>
+        <!--
+     Set custom default icon. This is used when no icon is set for incoming notification messages.
+     See README(https://goo.gl/l4GJaQ) for more.
+        -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/logo" />
+        <!--
+             Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message. See README(https://goo.gl/6BKBk7) for more.
+        -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorPrimaryDark" />
+
+        <activity android:name=".Activity.GiveCommentActivity"
+            android:label="Give Ratings"></activity>
     </application>
 
 </manifest>

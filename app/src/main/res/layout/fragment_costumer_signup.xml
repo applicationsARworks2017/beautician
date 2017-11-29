@@ -40,7 +40,7 @@
                         android:layout_width="50dp"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:background="@color/colorPrimary">
+                        android:background="@color/colorPrimaryLight">
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
                         android:layout_width="50dp"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:background="@color/colorPrimary">
+                        android:background="@color/colorPrimaryLight">
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -95,7 +95,7 @@
                         android:layout_width="50dp"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:background="@color/colorPrimary">
+                        android:background="@color/colorPrimaryLight">
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -123,7 +123,7 @@
                         android:layout_width="50dp"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:background="@color/colorPrimary">
+                        android:background="@color/colorPrimaryLight">
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -151,7 +151,7 @@
                         android:layout_width="50dp"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:background="@color/colorPrimary">
+                        android:background="@color/colorPrimaryLight">
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -175,7 +175,7 @@
                     android:layout_width="250dp"
                     android:layout_height="40dp"
                     android:layout_marginTop="30dp"
-                    android:background="@color/colorPrimary"
+                    android:background="@color/colorPrimaryLight"
                     android:text="Submit"
                     android:id="@+id/bt_user_submit"
                     android:layout_marginBottom="20dp"

@@ -64,6 +64,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="$ 350 "
+                    android:visibility="gone"
                     android:id="@+id/price_min"
                     android:textColor="@color/black"/>
                 <TextView
@@ -95,7 +96,7 @@
                 android:id="@+id/reqButton"
                 android:layout_marginTop="-10dp"
                 android:layout_marginRight="20dp"
-                android:background="@color/colorPrimaryDark"
+                android:background="@color/colorPrimaryLight"
                 android:textColor="@color/white"
                 android:text="Request"/>
         </LinearLayout>

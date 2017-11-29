@@ -1,23 +1,24 @@
 package beautician.com.sapplication.Fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.clans.fab.FloatingActionButton;
+
+import beautician.com.sapplication.Activity.CheckIndividualPost;
+import beautician.com.sapplication.Activity.CheckPost;
 import beautician.com.sapplication.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ServiceList.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ServiceList#newInstance} factory method to
- * create an instance of this fragment.
- */
+
+
 public class ServiceList extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -27,6 +28,7 @@ public class ServiceList extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    FloatingActionButton postList,reqList;
 
     private OnFragmentInteractionListener mListener;
 
@@ -65,7 +67,26 @@ public class ServiceList extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_service_list, container, false);
+        View v =inflater.inflate(R.layout.fragment_service_list, container, false);
+        postList=(FloatingActionButton)v.findViewById(R.id.postList);
+        reqList=(FloatingActionButton)v.findViewById(R.id.reqList);
+        postList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getActivity(), CheckPost.class);
+                intent.putExtra("PAGE","user_home");
+                startActivity(intent);
+            }
+        });
+        reqList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getActivity(), CheckIndividualPost.class);
+                intent.putExtra("PAGE","user_home");
+                startActivity(intent);
+            }
+        });
+        return v;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

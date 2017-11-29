@@ -57,6 +57,7 @@ public class RequestSubcategories extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        super.setTheme(R.style.AppUserTheme);
         setContentView(R.layout.activity_request_subcategories);
         category_id=CategoriesRequest.catid;
         categoryname=CategoriesRequest.value;

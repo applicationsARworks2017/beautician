@@ -48,6 +48,17 @@ public class CheckPost extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            page = extras.getString("PAGE");
+            // and get whatever type user account id is
+        }
+        if(page.contentEquals("sp_home")){
+
+        }
+        else {
+            super.setTheme(R.style.AppUserTheme);
+        }
         setContentView(R.layout.activity_check_post);
         srList=new ArrayList<>();
         user_id = CheckPost.this.getSharedPreferences(Constants.SHAREDPREFERENCE_KEY, 0).getString(Constants.USER_ID, null);
@@ -57,11 +68,7 @@ public class CheckPost extends AppCompatActivity {
         lv_checkpost=(ListView)findViewById(R.id.lv_checkpost);
 
         loader_chek_post.setVisibility(View.GONE);
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            page = extras.getString("PAGE");
-            // and get whatever type user account id is
-        }
+
 
         getAllpost();
         swipe_checkpost.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -196,8 +203,10 @@ public class CheckPost extends AppCompatActivity {
                             String remarks = o_list_obj.getString("remarks");
                             String category = o_list_obj.getString("category");
                             String sub_category = o_list_obj.getString("sub_category");
+                            String created = o_list_obj.getString("created");
                             String status = o_list_obj.getString("status");
-                            ServiceRequest list1 = new ServiceRequest(id,name,mobile,email,photo,remarks,category,sub_category,status);
+                            String expected_date = o_list_obj.getString("expected_date");
+                            ServiceRequest list1 = new ServiceRequest(id,name,mobile,email,photo,remarks,category,sub_category,status,created,expected_date);
                             srList.add(list1);
                         }
                     }
@@ -218,10 +227,12 @@ public class CheckPost extends AppCompatActivity {
                 if(page.contentEquals("sp_home")) {
                     serviceReqAdapterSP = new ServiceReqAdapterSP(CheckPost.this, srList);
                     lv_checkpost.setAdapter(serviceReqAdapterSP);
+                    serviceReqAdapterSP.notifyDataSetChanged();
                 }
                 else{
                     serviceReqAdapter = new ServiceReqAdapter(CheckPost.this, srList);
                     lv_checkpost.setAdapter(serviceReqAdapter);
+                    serviceReqAdapter.notifyDataSetChanged();
                 }
             }
             else{

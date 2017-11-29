@@ -48,21 +48,32 @@ public class SpProposal extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sp_proposal);
-        pList=new ArrayList<>();
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             page = extras.getString("PAGE");
             // and get whatever type user account id is
         }
+        if(page.contentEquals("user_side")){
+            super.setTheme(R.style.AppUserTheme);
+        }
+        setContentView(R.layout.activity_sp_proposal);
+        pList=new ArrayList<>();
         loader_propsals=(ProgressBar)findViewById(R.id.loader_propsals);
         swipe_propsal=(SwipeRefreshLayout)findViewById(R.id.swip_propsal);
         lv_propsals=(ListView)findViewById(R.id.proposal_list);
         no_propsal_txt=(TextView)findViewById(R.id.no_propsal_txt);
         user_id = SpProposal.this.getSharedPreferences(Constants.SHAREDPREFERENCE_KEY, 0).getString(Constants.USER_ID, null);
-
-
         getPropsalList();
+        swipe_propsal.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                pList.clear();
+                swipe_propsal.setRefreshing(false);
+                getPropsalList();
+
+            }
+        });
 
     }
 
@@ -75,10 +86,10 @@ public class SpProposal extends AppCompatActivity {
             Constants.noInternetDialouge(SpProposal.this,"No Internet");
         }
     }
-//* GET CATEGORY LIST ASYNTASK
+//* GET PROPSAL LIST ASYNTASK
     private class CheckPropsal extends AsyncTask<String, Void, Void> {
 
-        private static final String TAG = "getcategoryList";
+        private static final String TAG = "getpropsal";
 
         @Override
         protected void onPreExecute() {
@@ -178,12 +189,15 @@ public class SpProposal extends AppCompatActivity {
                         server_status=1;
                         for (int i = 0; i < servicePurposalArray.length(); i++) {
                             JSONObject o_list_obj = servicePurposalArray.getJSONObject(i);
+                            JSONObject new_obj=o_list_obj.getJSONObject("shop");
                             String id = o_list_obj.getString("id");
                             String service_request_id = o_list_obj.getString("service_request_id");
                             String remarks = o_list_obj.getString("remarks");
                             String status = o_list_obj.getString("status");
                             String created = o_list_obj.getString("created");
-                            Proposals list1 = new Proposals(id,service_request_id,remarks,status,created);
+                            String shop_id=new_obj.getString("id");
+                            String shop_name=new_obj.getString("shopname");
+                            Proposals list1 = new Proposals(id,service_request_id,remarks,status,created,shop_id,shop_name);
                             pList.add(list1);
                         }
                     }
@@ -203,6 +217,7 @@ public class SpProposal extends AppCompatActivity {
             if(server_status==1) {
                 propsalAdapter = new  PropsalAdapter (SpProposal.this,pList ,page);
                 lv_propsals.setAdapter(propsalAdapter);
+                propsalAdapter.notifyDataSetChanged();
             }
             else{
                 lv_propsals.setVisibility(View.GONE);

@@ -1,6 +1,7 @@
 package beautician.com.sapplication.Activity;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -135,13 +136,16 @@ public class Login_Activity extends AppCompatActivity {
         private static final String TAG = "SynchMobnum";
         String server_message;
         String id,name,email,mobile,photo,created_dt,modified_dt,usertype;
+        private ProgressDialog progressDialog = null;
 
         int server_status;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
+            if(progressDialog == null) {
+                progressDialog = ProgressDialog.show(Login_Activity.this, "Loading", "Please wait...");
+            }
             // onPreExecuteTask();
         }
 
@@ -263,6 +267,7 @@ public class Login_Activity extends AppCompatActivity {
                 showSnackBar(server_message);
 
             }
+            progressDialog.dismiss();
         }
     }
 

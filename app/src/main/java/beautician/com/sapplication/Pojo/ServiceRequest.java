@@ -5,7 +5,7 @@ package beautician.com.sapplication.Pojo;
  */
 
 public class ServiceRequest {
-    String id,name,mobile,email,photo,remarks,category,sub_category,status;
+    String id,name,mobile,email,photo,remarks,category,sub_category,status,created, expected_date;
 
     public String getId() {
         return id;
@@ -79,7 +79,24 @@ public class ServiceRequest {
         this.status = status;
     }
 
-    public ServiceRequest(String id, String name, String mobile, String email, String photo, String remarks, String category, String sub_category, String status) {
+    public String getCreated() {
+        return created;
+    }
+
+    public void setCreated(String created) {
+        this.created = created;
+    }
+
+    public String getExpected_date() {
+        return expected_date;
+    }
+
+    public void setExpected_date(String expected_date) {
+        this.expected_date = expected_date;
+    }
+
+    public ServiceRequest(String id, String name, String mobile, String email, String photo, String remarks,
+                          String category, String sub_category, String status, String created, String expected_date) {
         this.id=id;
         this.name=name;
         this.mobile=mobile;
@@ -89,6 +106,8 @@ public class ServiceRequest {
         this.category=category;
         this.sub_category=sub_category;
         this.status=status;
+        this.created=created;
+        this.expected_date=expected_date;
 
     }
 }

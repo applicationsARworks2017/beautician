@@ -40,13 +40,19 @@ public class Constants {
     public static String CREATE_OFFER="offers/add.json";
     public static String LIST_OFFER="offers/index.json";
     public static String SEARCH_SHOP="ShopDetails/shopList";
-    public static String TO_SHOP_REQUEST="service-indivisual-requests/add.json";
+    public static String NEW_SEARCH_SHOP="Shops/index.json";
+    public static String UPDATE_SERVICE_REQUEST="service-requests/edit.json";
+    public static String EDIT_PROPSAL="ServicePurposal/edit.json";
+    public static String INDICISUAL_REQUEST="service-indivisual-requests/add.json";
+    public static String INDICISUAL_REQUEST_LIST="service-indivisual-requests/index.json";
 
 
     public static final String SHAREDPREFERENCE_KEY = "beautician" ;
     public static final String USER_NAME = "username" ;
     public static final String USER_ID = "userid" ;
     public static final String USER_TYPE = "user_type" ;
+    public static String FCM_ID="fcmid";
+
 
 
     public static void noInternetDialouge(Context _context,String Message){

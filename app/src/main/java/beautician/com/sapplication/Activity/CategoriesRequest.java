@@ -50,6 +50,7 @@ public class CategoriesRequest extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        super.setTheme(R.style.AppUserTheme);
         setContentView(R.layout.activity_categories_request);
         cList=new ArrayList<>();
         loader_categoty=(ProgressBar)findViewById(R.id.loader_category);

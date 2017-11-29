@@ -34,6 +34,7 @@ import java.util.Date;
 import java.util.List;
 
 import beautician.com.sapplication.Activity.Login_Activity;
+import beautician.com.sapplication.Activity.MapActivity;
 import beautician.com.sapplication.R;
 import beautician.com.sapplication.Utils.CheckInternet;
 import beautician.com.sapplication.Utils.Constants;
@@ -59,8 +60,11 @@ public class SPSignup extends Fragment {
     Context _context;
     RelativeLayout sp_signup;
     private OnFragmentInteractionListener mListener;
-    Double latitude,longitude;
-    private EditText et_latlong,et_sp_name,et_sp_phone,et_sp_address,et_sp_mail,et_sp_pass;
+    public static Double latitude,longitude;
+
+    private EditText et_sp_name,et_sp_phone,et_sp_mail,et_sp_pass;
+    public static EditText et_latlong;
+    public static EditText et_sp_address;
     private ImageView iv_pic1,iv_pic2,iv_pic3;
     Button bt_setails_submit;
     ProgressBar loader_signup;
@@ -79,8 +83,8 @@ public class SPSignup extends Fragment {
     }
 
     public SPSignup(Double lat, Double lng) {
-        this.latitude=lat;
-        this.longitude=lng;
+        /*this.latitude=lat;
+        this.longitude=lng;*/
 
     }
 
@@ -109,10 +113,11 @@ public class SPSignup extends Fragment {
         View v=inflater.inflate(R.layout.fragment_spsignup, container, false);
         loader_signup=(ProgressBar)v.findViewById(R.id.loader_signup);
         et_latlong=(EditText)v.findViewById(R.id.et_sp_latlong);
-        et_latlong.setText(latitude+","+longitude);
+       // et_latlong.setText(latitude+","+longitude);
         et_sp_name=(EditText)v.findViewById(R.id.et_shop_name);
         et_sp_phone=(EditText)v.findViewById(R.id.et_sp_phone);
         et_sp_address=(EditText)v.findViewById(R.id.et_sp_address);
+        et_sp_address.setFocusable(false);
         et_sp_pass=(EditText)v.findViewById(R.id.et_sp_password);
         et_sp_mail=(EditText)v.findViewById(R.id.et_sp_email);
         iv_pic1=(ImageView)v.findViewById(R.id.img1);
@@ -130,6 +135,13 @@ public class SPSignup extends Fragment {
                 else{
                     Constants.noInternetDialouge(_context,"Kindly Check Your Internet Connection");
                 }
+            }
+        });
+        et_sp_address.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getActivity(),MapActivity.class);
+                startActivity(intent);
             }
         });
         iv_pic1.setOnClickListener(new View.OnClickListener() {
@@ -253,8 +265,8 @@ public class SPSignup extends Fragment {
         if(shop_name.length()<=0){
             showSnackBar("Enter Name");
         }
-        else if(shop_number.length()<10){
-            showSnackBar("Enter Valid Phone");
+        else if(shop_number.length()<0){
+            showSnackBar("Enter Phone");
         }
         else if(shop_mail.length()<=0){
             showSnackBar("Enter Mail");

@@ -29,6 +29,6 @@
             android:id="@+id/bt_search"
             android:textColor="@color/white"
             android:layout_marginTop="20dp"
-            android:background="@color/colorPrimaryDark"/>
+            android:background="@color/colorPrimaryLight"/>
     </LinearLayout>
 </RelativeLayout>

@@ -44,15 +44,17 @@ public class SPHome extends AppCompatActivity {
         card_checkPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(SPHome.this,CheckPost.class);
+                Intent intent=new Intent(SPHome.this,SpRequestHome.class);
                 intent.putExtra("PAGE","sp_home");
                 startActivity(intent);
+
             }
         });
         card_proposal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(SPHome.this,SpProposal.class);
+                intent.putExtra("PAGE","sp_home");
                 startActivity(intent);
             }
         });

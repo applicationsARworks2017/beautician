@@ -43,6 +43,7 @@ public class HomeActivity extends AppCompatActivity  implements android.location
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        super.setTheme(R.style.AppUserTheme);
         setContentView(R.layout.activity_home);
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);

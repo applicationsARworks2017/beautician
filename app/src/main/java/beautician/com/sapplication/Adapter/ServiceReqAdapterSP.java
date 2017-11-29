@@ -3,6 +3,7 @@ package beautician.com.sapplication.Adapter;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
@@ -35,6 +36,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import beautician.com.sapplication.Activity.CheckPost;
+import beautician.com.sapplication.Activity.Login_Activity;
 import beautician.com.sapplication.Pojo.CategoryList;
 import beautician.com.sapplication.Pojo.ServiceRequest;
 import beautician.com.sapplication.R;
@@ -52,6 +54,8 @@ public class ServiceReqAdapterSP extends BaseAdapter{
     Holder holder,holder1;
     Dialog dialog;
     String user_id;
+    private ProgressDialog progressDialog = null;
+
     String serviceRequestid;
     public ServiceReqAdapterSP(CheckPost checkPost, ArrayList<ServiceRequest> srList) {
         this._context=checkPost;
@@ -75,7 +79,7 @@ public class ServiceReqAdapterSP extends BaseAdapter{
     }
 
     private class Holder{
-        TextView Name_service,servide_details,remarks;
+        TextView Name_service,servide_details,remarks,tv_expected_date,actualtime;
         ImageView reply;
     }
 
@@ -89,6 +93,8 @@ public class ServiceReqAdapterSP extends BaseAdapter{
             convertView = mInflater.inflate(R.layout.service_list, parent, false);
             user_id = _context.getSharedPreferences(Constants.SHAREDPREFERENCE_KEY, 0).getString(Constants.USER_ID, null);
             holder.Name_service=(TextView)convertView.findViewById(R.id.name_service);
+            holder.tv_expected_date=(TextView)convertView.findViewById(R.id.tv_expected_date);
+            holder.actualtime=(TextView)convertView.findViewById(R.id.actualtime);
             holder.remarks=(TextView)convertView.findViewById(R.id.servicedetails);
             holder.reply=(ImageView) convertView.findViewById(R.id.im_reply);
             convertView.setTag(holder);
@@ -103,11 +109,21 @@ public class ServiceReqAdapterSP extends BaseAdapter{
             holder.reply.setVisibility(View.GONE);
         }
         holder.Name_service.setTag(position);
+        holder.tv_expected_date.setTag(position);
         holder.remarks.setTag(position);
         holder.reply.setTag(position);
+        holder.actualtime.setTag(position);
 
         holder.Name_service.setText(_pos.getName()+" has posted for " + _pos.getSub_category());
         holder.remarks.setText(_pos.getRemarks());
+        holder.actualtime.setText(_pos.getCreated());
+        if(_pos.getExpected_date().contentEquals("null")){
+            holder.tv_expected_date.setText(("No Expected defined"));
+
+        }
+        else{
+            holder.tv_expected_date.setText(("Expected Date: "+_pos.getExpected_date()));
+        }
 
         holder.reply.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,6 +150,9 @@ public class ServiceReqAdapterSP extends BaseAdapter{
                 ok.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if(progressDialog == null) {
+                            progressDialog = ProgressDialog.show(_context, "Loading", "Please wait...");
+                        }
                         String details=et_comments.getText().toString().trim();
                         serviceRequestid=_pos.getId();
                         if(details.length()<=0){
@@ -270,7 +289,9 @@ public class ServiceReqAdapterSP extends BaseAdapter{
             super.onPostExecute(user);
             if(server_status==1) {
                 dialog.dismiss();
-                Toast.makeText(_context,server_message,Toast.LENGTH_SHORT).show();
+                UpdateService updateService=new UpdateService();
+                updateService.execute(serviceRequestid,"1");
+              //  Toast.makeText(_context,server_message,Toast.LENGTH_SHORT).show();
 
             }
             else if(server_status==2){
@@ -288,9 +309,11 @@ public class ServiceReqAdapterSP extends BaseAdapter{
 
                 AlertDialog alert = builder.create();
                 alert.show();
+                progressDialog.dismiss();
             }
             else{
                 Toast.makeText(_context,server_message,Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
             }
 
         }
@@ -316,7 +339,7 @@ public class ServiceReqAdapterSP extends BaseAdapter{
                 InputStream in = null;
                 int resCode = -1;
 
-                String link =Constants.ONLINEURL+ Constants.SERVICE_REQUEST ;
+                String link =Constants.ONLINEURL+ Constants.UPDATE_SERVICE_REQUEST ;
                 URL url = new URL(link);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setReadTimeout(10000);
@@ -396,6 +419,7 @@ public class ServiceReqAdapterSP extends BaseAdapter{
         @Override
         protected void onPostExecute(Void user) {
             super.onPostExecute(user);
+            progressDialog.dismiss();
             Toast.makeText(_context, server_message, Toast.LENGTH_SHORT).show();
         }
     }

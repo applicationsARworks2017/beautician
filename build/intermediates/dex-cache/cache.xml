@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="/Users/amaresh/.android/build-cache/7a6f8526525170d829f5b933895f793d6656a172/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="59cca9b91688dc2467754d36793b3d23bebd21a9">
+        <dex dex="/Users/amaresh/Desktop/AmareshWorks/beautician/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_9d380d01d68873d4582db07e2e8bac9a2c15eabc/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/amaresh/.android/build-cache/0e77439eaab93bfe3e6b782212852a149cc64c89/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="6f65c144283b31b4b9a70e6e7aa4c4a1c897d4b8">
+        <dex dex="/Users/amaresh/Desktop/AmareshWorks/beautician/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_e6c2db3771581ea42db3ed09d0bae2fdfbdc6b40/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/amaresh/.android/build-cache/3fd3905d6fe5c402c760155ba2b9a512ff6e6a86/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="4ef8ab5fee042023018249474bc93bd4b2b9c17e">
+        <dex dex="/Users/amaresh/Desktop/AmareshWorks/beautician/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_54852d27ee871e97b27cdee4c18a2e0c11e61d7a/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/amaresh/.android/build-cache/cbdbe8a1adca6fa0d42a8b6afa9cca1e77623a56/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="0dc8ab07eeceda5e99b305c8069765056b6e5c9d">
+        <dex dex="/Users/amaresh/Desktop/AmareshWorks/beautician/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_b280b9f159c4431ae172c5bc6ca9f36206072ffe/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/amaresh/.android/build-cache/5d69cc4da788aa8822b13a47e8625818e285a8ea/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="a819aae4f0c711e50b4fd633922a3c1a176cb51e">
+        <dex dex="/Users/amaresh/Desktop/AmareshWorks/beautician/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_585e1c6931ed7c8019c2c2186ed526c5a3dece43/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/amaresh/.android/build-cache/f27c08ca49d4b7a0e5714451276eaf9f9c5bf427/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="005786793d72c6deacbbbfd38177ed58e1aa6653">
+        <dex dex="/Users/amaresh/Desktop/AmareshWorks/beautician/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_aa7b6e9e311cb3f0e4530d2dcd91a1ae226ff0ca/classes.dex" />
+    </item>
+
+</items>

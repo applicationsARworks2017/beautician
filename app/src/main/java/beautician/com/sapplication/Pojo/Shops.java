@@ -95,7 +95,7 @@ public class Shops {
         this.address = address;
     }
 
-    public Shops(String id, String latitudelongitude, String photo1, String photo2, String photo3, String no_of_reviews, String avg_rating, String price, String created,
+    public Shops(String id, String latitudelongitude, String photo1, String photo2, String photo3, String no_of_reviews, String avg_rating, String created,
                  String shopname, String address) {
         this.id=id;
         this.latitudelongitude=latitudelongitude;
@@ -104,7 +104,6 @@ public class Shops {
         this.photo3=photo3;
         this.no_of_reviews=no_of_reviews;
         this.avg_rating=avg_rating;
-        this.price=price;
         this.created=created;
         this.shopname=shopname;
         this.address=address;

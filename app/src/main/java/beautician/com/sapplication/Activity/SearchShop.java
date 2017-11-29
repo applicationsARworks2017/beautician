@@ -37,6 +37,7 @@ public class SearchShop extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        super.setTheme(R.style.AppUserTheme);
         setContentView(R.layout.activity_search_shop);
         et_searchText=(EditText)findViewById(R.id.et_searchText);
         bt_search=(Button)findViewById(R.id.bt_search);

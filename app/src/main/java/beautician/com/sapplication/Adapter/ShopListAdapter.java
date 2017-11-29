@@ -123,6 +123,8 @@ public class ShopListAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(_context,IndividualRequest.class);
+                intent.putExtra("SHOP_ID",_pos.getId());
+                intent.putExtra("SHOP_NAME",_pos.getShopname());
                 _context.startActivity(intent);
             }
         });
