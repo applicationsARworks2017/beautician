@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -24,7 +25,7 @@ import beautician.com.sapplication.Tabs.SPSignup;
 
 import static beautician.com.sapplication.R.drawable.map;
 
-public class MapActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class MapActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,OnMapReadyCallback {
     GoogleMap googleMap;
     SupportMapFragment fm;
     private String provider;
@@ -37,7 +38,23 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         fm = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.self_map);
-        googleMap = fm.getMap();
+        fm.getMapAsync(this);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        return false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        MapActivity.this.finish();
+    }
+
+    @Override
+    public void onMapReady(GoogleMap Map) {
+        this.googleMap=Map;
+
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
@@ -59,17 +76,10 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                 }
 
                 Toast.makeText(MapActivity.this,address+","+city+","+state,Toast.LENGTH_LONG).show();
+
             }
         });
-    }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        return false;
-    }
 
-    @Override
-    public void onBackPressed() {
-        MapActivity.this.finish();
     }
 }
