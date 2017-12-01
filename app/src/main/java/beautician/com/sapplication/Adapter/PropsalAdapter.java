@@ -40,6 +40,7 @@ import java.util.ArrayList;
 
 import beautician.com.sapplication.Activity.GiveCommentActivity;
 import beautician.com.sapplication.Activity.PropsalView;
+import beautician.com.sapplication.Activity.ShopDetails;
 import beautician.com.sapplication.Activity.SpProposal;
 import beautician.com.sapplication.Pojo.CategoryList;
 import beautician.com.sapplication.Pojo.Proposals;
@@ -107,6 +108,8 @@ public class PropsalAdapter extends BaseAdapter {
         holder.im_reply.setTag(holder);
         holder.im_agree.setTag(holder);
         holder.gv_feedback.setTag(holder);
+        holder.gv_feedback.setVisibility(View.GONE);
+
         final String status=_pos.getStatus();
 
         holder.actualtime.setText(_pos.getCreated());
@@ -128,6 +131,7 @@ public class PropsalAdapter extends BaseAdapter {
                 holder.im_agree.setImageDrawable(drawable1);
             }
             else if(status.contentEquals("3")){
+
                 Resources ress = _context.getResources();
                 Drawable drawable1 = ress.getDrawable(R.mipmap.ic_done_all_white_24dp);
                 drawable1 = DrawableCompat.wrap(drawable1);
@@ -182,12 +186,20 @@ public class PropsalAdapter extends BaseAdapter {
             }
         }
         if(from_page.contentEquals("user_side")){
-            holder.propsal_hd.setText(_pos.getShop_name()+" has replied : "+_pos.getRemarks());
+            holder.propsal_hd.setText(_pos.getShop_name().toUpperCase()+" has replied : "+_pos.getRemarks());
 
         }
         else {
             holder.propsal_hd.setText(_pos.getRemarks());
         }
+        holder.propsal_hd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(_context,ShopDetails.class);
+                intent.putExtra("SHOP_ID",_pos.getShop_id());
+                _context.startActivity(intent);
+            }
+        });
         holder.gv_feedback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

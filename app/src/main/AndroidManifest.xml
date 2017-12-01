@@ -166,8 +166,10 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorPrimaryDark" />
 
-        <activity android:name=".Activity.GiveCommentActivity"
-            android:label="Give Ratings"></activity>
+        <activity
+            android:name=".Activity.GiveCommentActivity"
+            android:label="Give Ratings" />
+        <activity android:name=".Activity.ShopDetails"></activity>
     </application>
 
 </manifest>

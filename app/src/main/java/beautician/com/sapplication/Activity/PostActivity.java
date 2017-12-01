@@ -73,7 +73,7 @@ public class PostActivity extends AppCompatActivity {
                 else {
                     String postDetails = et_contentheading.getText().toString().trim();
                     String numof = adult.getSelectedItem().toString();
-                    exp_date = txtDate + "," + txtTime;
+                    exp_date = txtDate.getText().toString().trim() + " " + txtTime.getText().toString().trim();
                     if (CheckInternet.getNetworkConnectivityStatus(PostActivity.this)) {
                         Postservice postservice = new Postservice();
                         postservice.execute(user_id, CategoriesRequest.catid, RequestSubcategories.SubcateryId, numof, postDetails, exp_date);

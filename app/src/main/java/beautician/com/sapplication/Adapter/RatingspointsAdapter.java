@@ -21,7 +21,7 @@ import beautician.com.sapplication.R;
  * Created by Amaresh on 11/27/17.
  */
 
-class RatingspointsAdapter extends ArrayAdapter {
+public  class RatingspointsAdapter extends ArrayAdapter {
     ArrayList<RatingsPoints> dataSet;
     Context mContext;
 
@@ -79,9 +79,11 @@ class RatingspointsAdapter extends ArrayAdapter {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 int getPosition = (Integer) buttonView.getTag();
                 dataSet.get(getPosition).setIschecked(buttonView.isChecked());
-                if(getContext() instanceof GiveCommentActivity) {
+
+
+                /*if(getContext() instanceof GiveCommentActivity) {
                     ((GiveCommentActivity) getContext()).onItemClickOfListView(getPosition, buttonView.isChecked());
-                }
+                }*/
             }
         });
         viewHolder.checkBox.setChecked(dataSet.get(position).getIschecked());

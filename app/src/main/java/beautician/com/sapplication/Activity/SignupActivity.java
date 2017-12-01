@@ -40,7 +40,7 @@ public class SignupActivity extends AppCompatActivity implements LocationListene
     Boolean isGPSEnabled,isNetworkEnabled;
     Double lat,lng;
     private LocationManager lom;
-    private String provider;
+    private String provider,fcm_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +51,7 @@ public class SignupActivity extends AppCompatActivity implements LocationListene
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
+        fcm_id = SignupActivity.this.getSharedPreferences(Constants.SHAREDPREFERENCE_KEY, 0).getString(Constants.FCM_ID, null);
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);

@@ -128,7 +128,7 @@ public class CheckPost extends AppCompatActivity {
                             .appendQueryParameter("shop_id", _user_id);
                 }
                 else{
-                    builder = new Uri.Builder()
+                      builder = new Uri.Builder()
                             .appendQueryParameter("user_id", _user_id);
                 }
                 String query = builder.build().getEncodedQuery();

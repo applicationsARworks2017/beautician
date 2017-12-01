@@ -33,6 +33,7 @@ public class Constants {
     public static String PRICE_LIST="ShopDetails/shopPriceListNew.json";
     public static String PRICE_SET="ShopDetails/add.json";
     public static String SERVICE_REQUEST="service-requests/addNew.json";
+    public static String COMMENTS="reviews/add.json";
     public static String ADD_PROPOSAL="service-purposal/add.json";
     public static String PROPOSALS="service-purposal/index.json";
     public static String SERVICE_REQUEST_LIST="service-requests/serviceRequestList.json";
