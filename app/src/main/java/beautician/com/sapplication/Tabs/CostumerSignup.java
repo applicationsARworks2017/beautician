@@ -3,6 +3,7 @@ package beautician.com.sapplication.Tabs;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -16,6 +17,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,6 +96,9 @@ public class CostumerSignup extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppUserTheme);
+        inflater = inflater.cloneInContext(contextThemeWrapper);
+
         View v=inflater.inflate(R.layout.fragment_costumer_signup, container, false);
         iv_avtar=(CircularImageView) v.findViewById(R.id.iv_user_pic);
         et_name=(EditText)v.findViewById(R.id.et_user_name);

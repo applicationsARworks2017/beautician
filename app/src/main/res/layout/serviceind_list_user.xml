@@ -28,6 +28,16 @@
                 android:text="I am ready"
                 android:layout_marginLeft="15dp"
                 android:layout_marginBottom="5dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/servicedetails"
+                android:layout_marginLeft="15dp"
+                android:textColor="@color/colorPrimaryLight"
+                android:text="expected_date"
+                android:textSize="10dp"
+                android:id="@+id/expected_date"
+                android:layout_marginBottom="5dp"/>
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

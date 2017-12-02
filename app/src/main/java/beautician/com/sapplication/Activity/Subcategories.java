@@ -162,8 +162,8 @@ public class Subcategories extends AppCompatActivity {
                 conn.setRequestMethod("POST");
 
                 Uri.Builder builder = new Uri.Builder()
-                        .appendQueryParameter("category_id", Categories.category_id);
-                       // .appendQueryParameter("shop_id", shop_id);
+                        .appendQueryParameter("category_id", Categories.category_id)
+                        .appendQueryParameter("shop_id", shop_id);
                 String query = builder.build().getEncodedQuery();
 
                 OutputStream os = conn.getOutputStream();

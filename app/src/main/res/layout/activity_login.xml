@@ -28,7 +28,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:background="@mipmap/ic_person_black_24dp"/>
+                    android:background="@mipmap/ic_phone_black_24dp"/>
                 <EditText
                     android:id="@+id/et_phn"
                     android:layout_marginLeft="10dp"

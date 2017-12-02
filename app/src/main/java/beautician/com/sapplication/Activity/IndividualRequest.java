@@ -1,6 +1,7 @@
 package beautician.com.sapplication.Activity;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -58,6 +59,8 @@ public class IndividualRequest extends AppCompatActivity {
             shop_name = extras.getString("SHOP_NAME");
             // and get whatever type user account id is
         }
+        txtDate=(EditText)findViewById(R.id.in_date);
+        txtTime=(EditText)findViewById(R.id.in_time);
         shopName=(TextView)findViewById(R.id.postHeading);
         shopName.setText("You are Interested for :"+ shop_name);
         et_details=(EditText)findViewById(R.id.et_contentheading);
@@ -69,7 +72,7 @@ public class IndividualRequest extends AppCompatActivity {
 
                     String postDetails=et_details.getText().toString().trim();
                     String numof=sp_num.getSelectedItem().toString();
-                    exp_date = txtDate + "," + txtTime;
+                    exp_date = txtDate.getText().toString().trim() + " " + txtTime.getText().toString().trim();
 
                 if(txtDate.getText().toString().trim().length()<=0){
                     Toast.makeText(IndividualRequest.this,"Please give Expected Date",Toast.LENGTH_LONG).show();
@@ -87,6 +90,8 @@ public class IndividualRequest extends AppCompatActivity {
 
             }
         });
+        btnDatePicker=(ImageView)findViewById(R.id.btn_date);
+        btnTimePicker=(ImageView)findViewById(R.id.btn_time);
         btnDatePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -145,11 +150,16 @@ public class IndividualRequest extends AppCompatActivity {
         private static final String TAG = "SynchMobnum";
         String server_message;
         String id,name,email,mobile,photo,created_dt,modified_dt,usertype;
+        private ProgressDialog progressDialog = null;
+
 
         int server_status;
 
         @Override
         protected void onPreExecute() {
+            if(progressDialog == null) {
+                progressDialog = ProgressDialog.show(IndividualRequest.this, "Posting", "Please wait...");
+            }
             super.onPreExecute();
 
             // onPreExecuteTask();

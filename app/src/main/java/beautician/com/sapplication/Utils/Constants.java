@@ -46,6 +46,8 @@ public class Constants {
     public static String EDIT_PROPSAL="ServicePurposal/edit.json";
     public static String INDICISUAL_REQUEST="service-indivisual-requests/add.json";
     public static String INDICISUAL_REQUEST_LIST="service-indivisual-requests/index.json";
+    public static String PICURL="http://applicationworld.net/beautician/webroot/files/profile/";
+    public static String SHOP_DETAILS="shops/view.json";
 
 
     public static final String SHAREDPREFERENCE_KEY = "beautician" ;

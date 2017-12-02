@@ -242,7 +242,7 @@ public class Login_Activity extends AppCompatActivity {
                 }
                 return null;
             } catch (Exception exception) {
-                server_message = "Network Error";
+                server_message = "Invalid Credentials";
                 Log.e(TAG, "SynchMobnum : doInBackground", exception);
             }
 

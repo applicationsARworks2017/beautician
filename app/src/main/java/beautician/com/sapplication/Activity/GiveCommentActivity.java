@@ -28,6 +28,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+import beautician.com.sapplication.Adapter.PropsalAdapter;
 import beautician.com.sapplication.Adapter.RatingspointsAdapter;
 import beautician.com.sapplication.Pojo.RatingsPoints;
 import beautician.com.sapplication.R;
@@ -43,9 +44,9 @@ public class GiveCommentActivity extends AppCompatActivity {
     ListView lv_ratings_value;
     Button bt_subratings;
     EditText et_comments_feedback;
-    String ratings_point_value;
-    String shop_id,shop_name,user_id;
-
+    String improve;
+    String shop_id,shop_name,user_id,propsal_id;
+    PropsalAdapter objadapter=new PropsalAdapter();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +56,7 @@ public class GiveCommentActivity extends AppCompatActivity {
         if (extras != null) {
             shop_id = extras.getString("SHOP_ID");
             shop_name = extras.getString("SHOP_NAME");
+            propsal_id = extras.getString("PROPSAL_ID");
             // and get whatever type user account id is
         }
         user_id = GiveCommentActivity.this.getSharedPreferences(Constants.SHAREDPREFERENCE_KEY, 0).getString(Constants.USER_ID, null);
@@ -99,8 +101,15 @@ public class GiveCommentActivity extends AppCompatActivity {
     private void getAllvalue() {
         StringBuffer sb = new StringBuffer();
 
-        if(Double.valueOf(ratings_value)<4.0){
+        if(Double.valueOf(ratings_value)<4.0) {
+
             for (RatingsPoints bean : ratingspoints) {
+                        /*if (counter<5) {
+                            counter++;
+                        }
+                        else {
+                            Toast.makeText(getApplicationContext(), "Only five please", Toast.LENGTH_SHORT).show();
+                        }*/
                 if (bean.getIschecked()) {
                     if (sb.toString().trim().contains(bean.getPoints())) {
 
@@ -109,15 +118,23 @@ public class GiveCommentActivity extends AppCompatActivity {
                         sb.append(",");
                     }
                 }
-                if (sb.length() <= 0) {
-                    Toast.makeText(GiveCommentActivity.this,"Please check atleast one point",Toast.LENGTH_SHORT).show();
+            }
+            if (sb.length() <= 0) {
+                Toast.makeText(GiveCommentActivity.this, "Please check atleast one point", Toast.LENGTH_SHORT).show();
 
-                }
-                else {
-                    ratings_point_value = sb.toString().trim();
-                }
+            } else {
+                improve = sb.toString().trim().substring(0, sb.length() - 1);
+                submit();
             }
         }
+
+        else{
+            submit();
+        }
+
+    }
+
+    private void submit() {
         String comments=et_comments_feedback.getText().toString().trim();
         if(ratings_value.contentEquals("")||ratings_value.contentEquals("null")){
             Toast.makeText(GiveCommentActivity.this,"Enter Rating Please",Toast.LENGTH_SHORT).show();
@@ -128,7 +145,7 @@ public class GiveCommentActivity extends AppCompatActivity {
         else{
             if(CheckInternet.getNetworkConnectivityStatus(GiveCommentActivity.this)){
                 SubmitRatings submitRatings=new SubmitRatings();
-                submitRatings.execute(ratings_value,comments,shop_id,ratings_point_value,user_id);
+                submitRatings.execute(ratings_value,comments,shop_id,improve,user_id);
             }
             else{
                 Constants.noInternetDialouge(GiveCommentActivity.this,"No Internet");
@@ -273,6 +290,7 @@ user_id:12
             super.onPostExecute(user);
             if (server_status == 1) {
                 finish();
+                objadapter.calltoupdate(propsal_id,"5","comment");
             }
             progressDialog.dismiss();
             Toast.makeText(GiveCommentActivity.this,server_message,Toast.LENGTH_SHORT).show();

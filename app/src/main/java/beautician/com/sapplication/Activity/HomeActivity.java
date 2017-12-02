@@ -66,7 +66,7 @@ public class HomeActivity extends AppCompatActivity  implements android.location
             }
 
         } else {
-            Toast.makeText(HomeActivity.this, "Allow to GPS", Toast.LENGTH_LONG).show();
+           // Toast.makeText(HomeActivity.this, "Allow to GPS", Toast.LENGTH_LONG).show();
         }
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -83,7 +83,7 @@ public class HomeActivity extends AppCompatActivity  implements android.location
             }
 
         } else {
-            Toast.makeText(HomeActivity.this, "Allow to GPS", Toast.LENGTH_LONG).show();
+           // Toast.makeText(HomeActivity.this, "Allow to GPS", Toast.LENGTH_LONG).show();
         }
 
         getgpsloc();
@@ -188,6 +188,8 @@ public class HomeActivity extends AppCompatActivity  implements android.location
     }
     public void getgpsloc() {
         ///gps code start
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
 
         locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
 
@@ -203,19 +205,21 @@ public class HomeActivity extends AppCompatActivity  implements android.location
 
             // First get location from Network Provider
             if (isNetworkEnabled) {
-                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME_BW_UPDATES,
-                        MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-                if (locationManager != null) {
-                    Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                    if (location != null) {
-                        double lat = location.getLatitude();
-                        double lon = location.getLongitude();
-                        latitude = String.valueOf(lat);
-                        longitude = String.valueOf(lon);
-                        this.canGetLocation = true;
-                     //   Toast.makeText(HomeActivity.this,latitude+longitude,Toast.LENGTH_LONG).show();
+
+                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME_BW_UPDATES,
+                            MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+                    if (locationManager != null) {
+                        Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                        if (location != null) {
+                            double lat = location.getLatitude();
+                            double lon = location.getLongitude();
+                            latitude = String.valueOf(lat);
+                            longitude = String.valueOf(lon);
+                            this.canGetLocation = true;
+                            //   Toast.makeText(HomeActivity.this,latitude+longitude,Toast.LENGTH_LONG).show();
 
 
+                        }
                     }
                 }
             }// End of IF network enabled

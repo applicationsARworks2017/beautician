@@ -44,7 +44,7 @@ public class IndServiceRequestAdapterUser extends BaseAdapter {
         return position;
     }
     public class Holder{
-        TextView Name_service,remarks;
+        TextView Name_service,remarks,expected_date;
 
     }
     @Override
@@ -58,6 +58,7 @@ public class IndServiceRequestAdapterUser extends BaseAdapter {
             user_id = _context.getSharedPreferences(Constants.SHAREDPREFERENCE_KEY, 0).getString(Constants.USER_ID, null);
             holder.Name_service=(TextView)convertView.findViewById(R.id.name_service);
             holder.remarks=(TextView)convertView.findViewById(R.id.servicedetails);
+            holder.expected_date=(TextView)convertView.findViewById(R.id.expected_date);
             convertView.setTag(holder);
         }
         else{
@@ -67,6 +68,13 @@ public class IndServiceRequestAdapterUser extends BaseAdapter {
         holder.remarks.setTag(position);
         holder.Name_service.setText("You have requested to "+_pos.getShopname()+" for the service");
         holder.remarks.setText(_pos.getRemarks());
+        if(_pos.getExpected_date().contentEquals("")|| _pos.getExpected_date().contentEquals("null")){
+            holder.expected_date.setText("No date defined");
+
+        }
+        else {
+            holder.expected_date.setText("Expected Date: " + _pos.getExpected_date());
+        }
         return convertView;
     }
 }

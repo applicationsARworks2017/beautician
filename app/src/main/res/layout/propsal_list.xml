@@ -45,7 +45,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="40dp"
+                android:layout_marginRight="30dp"
                 android:layout_below="@id/datentime"
                 android:id="@+id/view_details"
                 android:text="Service Details"
@@ -53,6 +53,19 @@
                 android:textStyle="italic"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="15dp"
+                android:layout_marginBottom="5dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="40dp"
+                android:layout_below="@id/datentime"
+                android:id="@+id/user_details"
+                android:layout_toRightOf="@id/view_details"
+                android:text="User Details"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="italic"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginBottom="5dp"/>
             <TextView
                 android:layout_width="wrap_content"

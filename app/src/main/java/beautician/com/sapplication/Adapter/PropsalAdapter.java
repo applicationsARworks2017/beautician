@@ -10,6 +10,7 @@ import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -58,11 +59,22 @@ public class PropsalAdapter extends BaseAdapter {
     Holder holder,holder1;
     Dialog dialog;
     String from_page;
+    String callPage="blanck";
     private ArrayList<Proposals> new_list;
     public PropsalAdapter(SpProposal spProposal, ArrayList<Proposals> pList,String page) {
         this._context=spProposal;
         this.new_list=pList;
         this.from_page=page;
+    }
+
+    public PropsalAdapter(FragmentActivity activity, ArrayList<Proposals> pList, String user_side) {
+        this._context=activity;
+        this.new_list=pList;
+        this.from_page=user_side;
+    }
+
+    public PropsalAdapter() {
+
     }
 
     @Override
@@ -80,7 +92,7 @@ public class PropsalAdapter extends BaseAdapter {
         return position;
     }
     private class Holder{
-        TextView propsal_hd,vew_details,gv_feedback,actualtime;
+        TextView propsal_hd,vew_details,gv_feedback,actualtime,user_details;
         ImageView im_reply,im_agree;
     }
     @Override
@@ -97,6 +109,7 @@ public class PropsalAdapter extends BaseAdapter {
             holder.actualtime=(TextView)convertView.findViewById(R.id.actualtime);
             holder.im_reply=(ImageView)convertView.findViewById(R.id.im_reply);
             holder.im_agree=(ImageView)convertView.findViewById(R.id.im_agree);
+            holder.user_details=(TextView) convertView.findViewById(R.id.user_details);
             convertView.setTag(holder);
         }
         else{
@@ -108,7 +121,9 @@ public class PropsalAdapter extends BaseAdapter {
         holder.im_reply.setTag(holder);
         holder.im_agree.setTag(holder);
         holder.gv_feedback.setTag(holder);
+        holder.user_details.setTag(holder);
         holder.gv_feedback.setVisibility(View.GONE);
+        holder.user_details.setVisibility(View.GONE);
 
         final String status=_pos.getStatus();
 
@@ -146,6 +161,14 @@ public class PropsalAdapter extends BaseAdapter {
                 DrawableCompat.setTint(drawable1, _context.getResources().getColor(R.color.colorPrimary));
                 holder.im_agree.setImageDrawable(drawable1);
             }
+            else if(status.contentEquals("5")){ // completed
+                Resources ress = _context.getResources();
+                Drawable drawable1 = ress.getDrawable(R.mipmap.ic_done_all_white_24dp);
+                drawable1 = DrawableCompat.wrap(drawable1);
+                DrawableCompat.setTint(drawable1, _context.getResources().getColor(R.color.colorPrimary));
+                holder.im_agree.setImageDrawable(drawable1);
+                holder.gv_feedback.setVisibility(View.GONE);
+            }
             else{
                 holder.im_agree.setEnabled(false);
             }
@@ -168,6 +191,7 @@ public class PropsalAdapter extends BaseAdapter {
                 holder.im_reply.setImageDrawable(drawable1);
             }
             else if(status.contentEquals("3")){ // service is giving after getting user details
+                holder.user_details.setVisibility(View.VISIBLE);
                 Resources ress = _context.getResources();
                 Drawable drawable1 = ress.getDrawable(R.mipmap.ic_assignment_turned_in_white_24dp);
                 drawable1 = DrawableCompat.wrap(drawable1);
@@ -180,6 +204,14 @@ public class PropsalAdapter extends BaseAdapter {
                 drawable1 = DrawableCompat.wrap(drawable1);
                 DrawableCompat.setTint(drawable1, _context.getResources().getColor(R.color.colorPrimary));
                 holder.im_reply.setImageDrawable(drawable1);
+            }
+            else if(status.contentEquals("5")){ // completed
+                Resources ress = _context.getResources();
+                Drawable drawable1 = ress.getDrawable(R.mipmap.ic_done_all_white_24dp);
+                drawable1 = DrawableCompat.wrap(drawable1);
+                DrawableCompat.setTint(drawable1, _context.getResources().getColor(R.color.colorPrimary));
+                holder.im_reply.setImageDrawable(drawable1);
+
             }
             else {
                 holder.im_reply.setEnabled(false);
@@ -195,17 +227,22 @@ public class PropsalAdapter extends BaseAdapter {
         holder.propsal_hd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(_context,ShopDetails.class);
-                intent.putExtra("SHOP_ID",_pos.getShop_id());
-                _context.startActivity(intent);
+                if(from_page.contentEquals("user_side")) {
+                    Intent intent = new Intent(_context, ShopDetails.class);
+                    intent.putExtra("SHOP_ID", _pos.getShop_id());
+                    _context.startActivity(intent);
+                }
             }
         });
         holder.gv_feedback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                holder1=(Holder)v.getTag();
+                holder1.gv_feedback.setVisibility(View.GONE);
                 Intent intent=new Intent(_context,GiveCommentActivity.class);
                 intent.putExtra("SHOP_NAME",_pos.getShop_name());
                 intent.putExtra("SHOP_ID",_pos.getShop_id());
+                intent.putExtra("PROPSAL_ID",_pos.getId());
                 _context.startActivity(intent);
             }
         });
@@ -245,14 +282,15 @@ public class PropsalAdapter extends BaseAdapter {
                     callTo = "3";
                     AlertDialog.Builder builder = new AlertDialog.Builder(_context);
                     builder.setTitle("User is ready to take the service");
-                    builder.setMessage("Do you want to go ahead ?");
+                    builder.setMessage("You have to pay $5 , Do you want to go ahead?");
                     final String finalCallTo = callTo;
                     builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             //TODO
                             //   dialog.dismiss();
-                            ConfirmToProp confirmToProp = new ConfirmToProp();
-                            confirmToProp.execute(_pos.getId(), finalCallTo);
+                            Toast.makeText(_context,"Insufficient wallet balance",Toast.LENGTH_SHORT).show();
+                           /* ConfirmToProp confirmToProp = new ConfirmToProp();
+                            confirmToProp.execute(_pos.getId(), finalCallTo);*/
 
                         }
                     });
@@ -338,10 +376,17 @@ public class PropsalAdapter extends BaseAdapter {
                 }
             }
         });
+
+        holder.user_details.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         return convertView;
     }
 
-    private class ConfirmToProp extends AsyncTask<String, Void, Void> {
+    public class ConfirmToProp extends AsyncTask<String, Void, Void> {
 
         private static final String TAG = "Share Sync";
         String server_message;
@@ -432,17 +477,29 @@ public class PropsalAdapter extends BaseAdapter {
         @Override
         protected void onPostExecute(Void user) {
             super.onPostExecute(user);
-            Toast.makeText(_context,server_message,Toast.LENGTH_SHORT).show();
-            if(server_status==1) {
-                if(holder1.im_agree.getVisibility()==View.VISIBLE) {
-                    holder1.im_agree.setVisibility(View.GONE);
-                }
-                else if(holder1.im_reply.getVisibility()==View.VISIBLE) {
-                    holder1.im_reply.setVisibility(View.GONE);
+            if(callPage.contentEquals("comment")){
+
+            }
+            else {
+                Toast.makeText(_context, server_message, Toast.LENGTH_SHORT).show();
+                if (server_status == 1) {
+                    if (holder1.im_agree.getVisibility() == View.VISIBLE) {
+                        holder1.im_agree.setVisibility(View.GONE);
+                    } else if (holder1.im_reply.getVisibility() == View.VISIBLE) {
+                        holder1.im_reply.setVisibility(View.GONE);
+                    } else if (holder1.gv_feedback.getVisibility() == View.VISIBLE) {
+                        holder1.gv_feedback.setVisibility(View.GONE);
+                    }
                 }
             }
 
         }
+    }
+
+    public void calltoupdate(String id, String status,String call){
+        callPage=call;
+        ConfirmToProp confirmToProp = new ConfirmToProp();
+        confirmToProp.execute(id, status);
     }
 
 }

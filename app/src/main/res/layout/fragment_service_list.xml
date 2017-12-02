@@ -8,65 +8,29 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-       <!-- <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
+        <ProgressBar
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="5dp">
-            <RelativeLayout
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            android:id="@+id/loader_propsals"/>
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:layout_width="match_parent"
+            android:id="@+id/swip_propsal"
+            android:layout_height="match_parent">
+            <ListView
                 android:layout_width="match_parent"
-                android:layout_margin="10dp"
-                android:layout_height="match_parent">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Hair Cut and Saving "
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:id="@+id/tv_servicedetails"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_servicedetails"
-                    android:layout_marginTop="5dp"
-                    android:text="Green Trends"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:id="@+id/tv_spname"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Total cost : 15 $"
-                    android:id="@+id/sp_cost"
-                    android:layout_below="@id/tv_spname"/>
-                <RatingBar
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style = "?android:attr/ratingBarStyleSmall"
-                    android:layout_below="@id/sp_cost"
-                    android:rating="4.5"
-                    android:progressTint="@color/duskyellow"
-                    />
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="20dp"
-                    android:background="@mipmap/ic_done_all_white_24dp"
-                    android:backgroundTint="@color/colorPrimaryDark"
-                    android:id="@+id/iv_status"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@id/iv_status"
-                    android:layout_marginTop="20dp"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:text="Completed"/>
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>-->
+                android:layout_height="match_parent"
+                android:divider="@null"
+                android:id="@+id/proposal_list"></ListView>
+        </android.support.v4.widget.SwipeRefreshLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No Propsals"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            android:id="@+id/no_propsal_txt"/>
         <com.github.clans.fab.FloatingActionMenu
             android:id="@+id/material_design_android_floating_action_menu"
             android:layout_width="wrap_content"

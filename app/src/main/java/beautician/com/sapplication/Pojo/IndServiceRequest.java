@@ -6,7 +6,7 @@ package beautician.com.sapplication.Pojo;
 
 public class IndServiceRequest {
     String id,remarks,personId,personName,personemail,personmobile,
-            personphoto,status, no_of_user,shopname;
+            personphoto,status, no_of_user,shopname,expected_date;
 
     public String getId() {
         return id;
@@ -88,8 +88,16 @@ public class IndServiceRequest {
         this.shopname = shopname;
     }
 
+    public String getExpected_date() {
+        return expected_date;
+    }
+
+    public void setExpected_date(String expected_date) {
+        this.expected_date = expected_date;
+    }
+
     public IndServiceRequest(String id, String remarks, String personId, String personName, String personemail, String personmobile, String personphoto,
-                             String status, String no_of_user, String shopname) {
+                             String status, String no_of_user, String shopname, String ecpected_date) {
 
         this.id=id;
         this.remarks=remarks;
@@ -101,6 +109,8 @@ public class IndServiceRequest {
         this.status=status;
         this.no_of_user=no_of_user;
         this.shopname=shopname;
+        this.expected_date=ecpected_date;
+
 
 
 
