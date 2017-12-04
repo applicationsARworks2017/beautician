@@ -83,6 +83,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.Manageservice"
+            android:label="Service"
+            android:parentActivityName=".Activity.SPHome"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.RequestSubcategories"
@@ -133,8 +135,8 @@
         <activity android:name=".Activity.SpRequestHome" />
         <activity
             android:name=".Activity.CheckIndividualPost"
-            android:parentActivityName=".Activity.HomeActivity"
-            android:label="Service Requests" />
+            android:label="Service Requests"
+            android:parentActivityName=".Activity.HomeActivity" />
 
         <!-- Firebase Notifications -->
         <service android:name=".Firebase.MyFirebaseMessagingService">
@@ -172,8 +174,15 @@
         <activity
             android:name=".Activity.GiveCommentActivity"
             android:label="Give Ratings" />
-        <activity android:name=".Activity.ShopDetails"
-            android:label="Shop Details"></activity>
+        <activity
+            android:name=".Activity.ShopDetails"
+            android:label="Shop Details" />
+        <activity
+            android:name=".Activity.MyserviceList"
+            android:label="Service"
+            android:parentActivityName=".Activity.Manageservice"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Activity.MySubcategories"></activity>
     </application>
 
 </manifest>

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -54,14 +55,22 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
     @Override
     public void onMapReady(GoogleMap Map) {
         this.googleMap=Map;
+        LatLng latLng = new LatLng(Double.valueOf(SignupActivity.latitude),Double.valueOf(SignupActivity.longitude));
+
+        googleMap.moveCamera( CameraUpdateFactory.newLatLngZoom(new LatLng(Double.valueOf(SignupActivity.latitude),Double.valueOf(SignupActivity.longitude)) , 14.0f) );
+        googleMap.addMarker(new MarkerOptions().position(latLng));
+        markerOptions = new MarkerOptions();
+        markerOptions.position(latLng);
+        googleMap.addMarker(markerOptions);
+        googleMap.addMarker(markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
 
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
                 googleMap.clear();
                 googleMap.addMarker(new MarkerOptions().position(latLng).title("Custom location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-                SPSignup.latitude=latLng.latitude;
-                SPSignup.longitude=latLng.longitude;
+                //SPSignup.latitude=latLng.latitude;
+                //SPSignup.longitude=latLng.longitude;
                 SPSignup.et_latlong.setText(latLng.latitude+","+latLng.longitude);
                 List<Address> addresses;
                 geocoder = new Geocoder(MapActivity.this, Locale.getDefault());

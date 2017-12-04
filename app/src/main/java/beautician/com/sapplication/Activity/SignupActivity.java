@@ -14,6 +14,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,15 +33,21 @@ import beautician.com.sapplication.Tabs.CostumerSignup;
 import beautician.com.sapplication.Tabs.SPSignup;
 import beautician.com.sapplication.Utils.Constants;
 
-public class SignupActivity extends AppCompatActivity implements LocationListener,GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class SignupActivity extends AppCompatActivity implements android.location.LocationListener  {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private Toolbar toolbar;
     private GoogleApiClient googleApiClient;
-    Boolean isGPSEnabled,isNetworkEnabled;
-    Double lat,lng;
+    public  static String latitude, longitude;
     private LocationManager lom;
     private String provider,fcm_id;
+    Boolean isGPSEnabled, isNetworkEnabled, canGetLocation;
+    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
+    LocationManager locationManager;
+
+
+    // The minimum time between updates in milliseconds
+    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1; // 1 minute
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,117 +55,63 @@ public class SignupActivity extends AppCompatActivity implements LocationListene
         setContentView(R.layout.activity_signup);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         fcm_id = SignupActivity.this.getSharedPreferences(Constants.SHAREDPREFERENCE_KEY, 0).getString(Constants.FCM_ID, null);
-
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-        setUpGClient();
-        lom = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        // getting GPS status
-        isGPSEnabled = lom.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
-        // getting network status
-        isNetworkEnabled = lom.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
         Criteria criteria = new Criteria();
-        provider = lom.getBestProvider(criteria, false);
-        if (!isGPSEnabled && !isNetworkEnabled) {
-            // no GPS Provider and no network provider is enabled
-        }
-        if (!isGPSEnabled && !isNetworkEnabled) {
-            Constants.noInternetDialouge(SignupActivity.this, " No GPS Provider or No Network Provider is enabled");
-            // no GPS Provider and no network provider is enabled
-        } else {   // Either GPS provider or network provider is enabled
+        provider = locationManager.getBestProvider(criteria, false);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            Location location = locationManager.getLastKnownLocation(provider);
 
-            // First get location from Network Provider
-            if (isNetworkEnabled) {
-                //lom.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME_BW_UPDATES,
-                // MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
-                        (this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return;
-                }
-                if (lom != null) {
-
-                    Location location = lom.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                    if (location != null) {
-                        System.out.println("Provider " + provider + " has been selected.");
-                        onLocationChanged(location);
-                    } else {
-                        //  showsnackbar("Location Not Found");
-                    }
-
-                }
-            }// End of IF network enabled
-
-            // if GPS Enabled get lat/long using GPS Services
-            if (isGPSEnabled) {
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return;
-                }
-                //lom.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME_BW_UPDATES,
-                //MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-                if (lom != null) {
-                    Location location = lom.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    if (location != null) {
-                        System.out.println("Provider " + provider + " has been selected.");
-                        onLocationChanged(location);
-                    } else {
-                        // showsnackbar("Location Not found");
-                    }
-
-                }
-            }
             // Initialize the location fields
+            if (location != null) {
+                System.out.println("Provider " + provider + " has been selected.");
+                onLocationChanged(location);
+            } else {
+                /*Latitude.setText("Device can't founf the loc");
+                Longitude.setText("Device can't founf the loc");*/
+            }
+
+        } else {
+            // Toast.makeText(HomeActivity.this, "Allow to GPS", Toast.LENGTH_LONG).show();
         }
 
-        setupViewPager(viewPager);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            Location location = locationManager.getLastKnownLocation(provider);
 
-        /*Bundle bundle = new Bundle();
-        bundle.putString("LATITUDE", lat.toString());
-        bundle.putString("LONGITUDE", lng.toString());
-        SPSignup fragobj = new SPSignup();
-        fragobj.setArguments(bundle);*/
+            // Initialize the location fields
+            if (location != null) {
+                System.out.println("Provider " + provider + " has been selected.");
+                onLocationChanged(location);
+            } else {
+                /*Latitude.setText("Device can't founf the loc");
+                Longitude.setText("Device can't founf the loc");*/
+            }
+
+        } else {
+            // Toast.makeText(HomeActivity.this, "Allow to GPS", Toast.LENGTH_LONG).show();
+        }
+
+        getgpsloc();
+        setupViewPager(viewPager);
     }
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new CostumerSignup(), "COSTUMER");
-        adapter.addFragment(new SPSignup(lat,lng), "SERVICE PROVIDER");
+        adapter.addFragment(new SPSignup(latitude,longitude), "SERVICE PROVIDER");
         viewPager.setAdapter(adapter);
-    }
-    private synchronized void setUpGClient() {
-        googleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, 0, SignupActivity.this)
-                .addConnectionCallbacks((GoogleApiClient.ConnectionCallbacks) this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-        googleApiClient.connect();
     }
 
     @Override
     public void onLocationChanged(Location location) {
-        lat = location.getLatitude();
-        lng = location.getLongitude();
 
     }
 
@@ -169,28 +122,11 @@ public class SignupActivity extends AppCompatActivity implements LocationListene
 
     @Override
     public void onProviderEnabled(String provider) {
-        Toast.makeText(SignupActivity.this,"GPS Provider Enabled",Toast.LENGTH_LONG).show();
 
     }
 
     @Override
     public void onProviderDisabled(String provider) {
-        Toast.makeText(SignupActivity.this,"GPS Provider Disabled",Toast.LENGTH_LONG).show();
-
-    }
-
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
 
@@ -221,6 +157,81 @@ public class SignupActivity extends AppCompatActivity implements LocationListene
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
         }
+    }
+    public void getgpsloc() {
+        ///gps code start
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+
+            locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
+
+            // getting GPS status
+            isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+            // getting network status
+            isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+            if (!isGPSEnabled && !isNetworkEnabled) {
+                // no GPS Provider and no network provider is enabled
+            } else {   // Either GPS provider or network provider is enabled
+
+                // First get location from Network Provider
+                if (isNetworkEnabled) {
+
+                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME_BW_UPDATES,
+                            MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+                    if (locationManager != null) {
+                        Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                        if (location != null) {
+                            double lat = location.getLatitude();
+                            double lon = location.getLongitude();
+                            latitude = String.valueOf(lat);
+                            longitude = String.valueOf(lon);
+                            this.canGetLocation = true;
+                            //   Toast.makeText(HomeActivity.this,latitude+longitude,Toast.LENGTH_LONG).show();
+
+
+                        }
+                    }
+                }
+            }// End of IF network enabled
+
+            // if GPS Enabled get lat/long using GPS Services
+            if (isGPSEnabled) {
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                }
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME_BW_UPDATES,
+                        MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+                if (locationManager != null)
+                {
+                    Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    if (location != null)
+                    {
+                        double lat = location.getLatitude();
+                        double lon = location.getLongitude();
+                        latitude=String.valueOf(lat);
+                        longitude=String.valueOf(lon);
+                        this.canGetLocation = true;
+                        //    Toast.makeText(HomeActivity.this,latitude+longitude,Toast.LENGTH_LONG).show();
+
+
+                    }
+                }
+
+            }// End of if GPS Enabled
+        }// End of Either GPS provider or network provider is enabled
+
+
+
+        //gps code end
     }
 
 }

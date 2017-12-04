@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -14,6 +16,7 @@ import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
+import android.text.method.KeyListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +35,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import beautician.com.sapplication.Activity.Login_Activity;
 import beautician.com.sapplication.Activity.MapActivity;
@@ -61,6 +65,7 @@ public class SPSignup extends Fragment {
     RelativeLayout sp_signup;
     private OnFragmentInteractionListener mListener;
     public static Double latitude,longitude;
+    String sign_lat,sign_long;
 
     private EditText et_sp_name,et_sp_phone,et_sp_mail,et_sp_pass;
     public static EditText et_latlong;
@@ -74,19 +79,24 @@ public class SPSignup extends Fragment {
     int imageclick;
     private static final int CAMERA_REQUEST = 1888;
     String imPath;
+    Geocoder geocoder;
     File imageFile,imgfile1,imgfile2,imgfile3;
     Uri picUri=null;
     Boolean picAvailable=false;
+    KeyListener variable;
+
 
     public SPSignup() {
         // Required empty public constructor
     }
 
-    public SPSignup(Double lat, Double lng) {
-        /*this.latitude=lat;
-        this.longitude=lng;*/
+    public SPSignup(String lat, String lng) {
+        this.sign_lat=lat;
+        this.sign_long=lng;
 
     }
+
+
 
     public static SPSignup newInstance(String param1, String param2) {
         SPSignup fragment = new SPSignup();
@@ -117,7 +127,9 @@ public class SPSignup extends Fragment {
         et_sp_name=(EditText)v.findViewById(R.id.et_shop_name);
         et_sp_phone=(EditText)v.findViewById(R.id.et_sp_phone);
         et_sp_address=(EditText)v.findViewById(R.id.et_sp_address);
-        et_sp_address.setFocusable(false);
+      //  et_sp_address.setFocusable(false);
+        variable = et_sp_address.getKeyListener();
+        et_sp_address.setKeyListener(null);
         et_sp_pass=(EditText)v.findViewById(R.id.et_sp_password);
         et_sp_mail=(EditText)v.findViewById(R.id.et_sp_email);
         iv_pic1=(ImageView)v.findViewById(R.id.img1);
@@ -125,6 +137,21 @@ public class SPSignup extends Fragment {
         iv_pic3=(ImageView)v.findViewById(R.id.img3);
         sp_signup=(RelativeLayout)v.findViewById(R.id.sp_signup);
         bt_setails_submit=(Button)v.findViewById(R.id.bt_sp_submit);
+
+
+        List<Address> addresses;
+        geocoder = new Geocoder(getActivity(), Locale.getDefault());
+        try {
+            addresses = geocoder.getFromLocation(Double.valueOf(sign_lat),Double.valueOf(sign_long), 1);
+            String address=addresses.get(0).getAddressLine(0);
+            String city=addresses.get(0).getLocality();
+            String state=addresses.get(0).getAdminArea();
+            et_sp_address.setText(address+","+city+","+state);
+            et_latlong.setText(sign_lat+","+sign_long);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         bt_setails_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -140,8 +167,26 @@ public class SPSignup extends Fragment {
         et_sp_address.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getActivity(),MapActivity.class);
-                startActivity(intent);
+                if(et_sp_address.getKeyListener()==variable){
+
+                }
+                else {
+                    Intent intent = new Intent(getActivity(), MapActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
+        et_sp_address.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if(et_sp_address.getKeyListener()==variable) {
+                    et_sp_address.setKeyListener(null);
+                }
+                else{
+                    et_sp_address.setKeyListener(variable);
+
+                }
+                return true;
             }
         });
         iv_pic1.setOnClickListener(new View.OnClickListener() {

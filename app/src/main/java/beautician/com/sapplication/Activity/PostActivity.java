@@ -3,10 +3,12 @@ package beautician.com.sapplication.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -67,21 +69,41 @@ public class PostActivity extends AppCompatActivity {
         submit_post.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(txtDate.getText().toString().trim().length()<=0){
-                    Toast.makeText(PostActivity.this,"Please give Expected Date",Toast.LENGTH_LONG).show();
-                }
-                else {
-                    String postDetails = et_contentheading.getText().toString().trim();
-                    String numof = adult.getSelectedItem().toString();
-                    exp_date = txtDate.getText().toString().trim() + " " + txtTime.getText().toString().trim();
-                    if (CheckInternet.getNetworkConnectivityStatus(PostActivity.this)) {
-                        Postservice postservice = new Postservice();
-                        postservice.execute(user_id, CategoriesRequest.catid, RequestSubcategories.SubcateryId, numof, postDetails, exp_date);
-                    } else {
-                        Constants.noInternetDialouge(PostActivity.this, "No Internet");
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(PostActivity.this);
+                builder.setTitle("");
+                builder.setMessage("Your wallet will be deducted with $1 for this post");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //TODO
+                        //   dialog.dismiss();
+                        if(txtDate.getText().toString().trim().length()<=0){
+                            Toast.makeText(PostActivity.this,"Please give Expected Date",Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            String postDetails = et_contentheading.getText().toString().trim();
+                            String numof = adult.getSelectedItem().toString();
+                            exp_date = txtDate.getText().toString().trim() + " " + txtTime.getText().toString().trim();
+                            if (CheckInternet.getNetworkConnectivityStatus(PostActivity.this)) {
+                                Postservice postservice = new Postservice();
+                                postservice.execute(user_id, CategoriesRequest.catid, RequestSubcategories.SubcateryId, numof, postDetails, exp_date);
+                            } else {
+                                Constants.noInternetDialouge(PostActivity.this, "No Internet");
+
+                            }
+                        }
+
 
                     }
-                }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
 
 
 

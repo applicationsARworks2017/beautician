@@ -24,6 +24,7 @@ import beautician.com.sapplication.R;
 public class Constants {
     public static String ONLINEURL="http://applicationworld.net/beautician/";
     public static String CATEGORYLIST="categories/index.json";
+    public static String CATEGORYLIST_SHOPWISE="ShopDetails/shopListCat";
     public static String SUB_CATEGORYLIST="sub-categories/index.json";
     public static String USER_REGISTRATION="users/add.json";
     public static String SHOP_REGISTRATION="shops/add.json";

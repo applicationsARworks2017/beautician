@@ -159,6 +159,15 @@ public class ShopListAdapter extends BaseAdapter {
                 _context.startActivity(intent);
             }
         });
+
+
+        holder.check_details.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         return convertView;
 
     }
