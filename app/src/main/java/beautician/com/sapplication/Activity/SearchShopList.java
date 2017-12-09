@@ -58,10 +58,19 @@ public class SearchShopList extends AppCompatActivity {
         }
         sList=new ArrayList<>();
         getSearchShop();
+        swipe_searchshop.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getSearchShop();
+
+            }
+        });
 
     }
 
     private void getSearchShop() {
+        sList.clear();
+        swipe_searchshop.setRefreshing(false);
         if(CheckInternet.getNetworkConnectivityStatus(SearchShopList.this)){
             Searchshop seach=new Searchshop();
             seach.execute(search_text);

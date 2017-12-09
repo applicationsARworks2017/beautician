@@ -89,18 +89,23 @@
         <activity
             android:name=".Activity.RequestSubcategories"
             android:label="Detail List"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:parentActivityName=".Activity.HomeActivity"/>
         <activity
             android:name=".Activity.SearchShop"
             android:label="Search"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:parentActivityName=".Activity.HomeActivity"/>
         <activity
             android:name=".Activity.SearchShopList"
             android:label="Search List"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:parentActivityName=".Activity.SearchShop"/>
         <activity
             android:name=".Activity.CategoriesRequest"
-            android:label="Choose Service" />
+            android:label="Choose Service"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".Activity.HomeActivity"/>
         <activity
             android:name=".Activity.CheckPost"
             android:label="Public Posts"
@@ -182,7 +187,10 @@
             android:label="Service"
             android:parentActivityName=".Activity.Manageservice"
             android:screenOrientation="portrait" />
-        <activity android:name=".Activity.MySubcategories"></activity>
+        <activity android:name=".Activity.MySubcategories"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".Activity.Manageservice"
+            android:label="Service Detail"></activity>
     </application>
 
 </manifest>

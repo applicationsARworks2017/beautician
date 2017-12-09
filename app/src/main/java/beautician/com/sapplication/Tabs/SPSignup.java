@@ -26,6 +26,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -84,6 +85,7 @@ public class SPSignup extends Fragment {
     Uri picUri=null;
     Boolean picAvailable=false;
     KeyListener variable;
+    TextView tv_gomap;
 
 
     public SPSignup() {
@@ -128,8 +130,6 @@ public class SPSignup extends Fragment {
         et_sp_phone=(EditText)v.findViewById(R.id.et_sp_phone);
         et_sp_address=(EditText)v.findViewById(R.id.et_sp_address);
       //  et_sp_address.setFocusable(false);
-        variable = et_sp_address.getKeyListener();
-        et_sp_address.setKeyListener(null);
         et_sp_pass=(EditText)v.findViewById(R.id.et_sp_password);
         et_sp_mail=(EditText)v.findViewById(R.id.et_sp_email);
         iv_pic1=(ImageView)v.findViewById(R.id.img1);
@@ -137,6 +137,7 @@ public class SPSignup extends Fragment {
         iv_pic3=(ImageView)v.findViewById(R.id.img3);
         sp_signup=(RelativeLayout)v.findViewById(R.id.sp_signup);
         bt_setails_submit=(Button)v.findViewById(R.id.bt_sp_submit);
+        tv_gomap=(TextView)v.findViewById(R.id.tv_gomap);
 
 
         List<Address> addresses;
@@ -164,29 +165,12 @@ public class SPSignup extends Fragment {
                 }
             }
         });
-        et_sp_address.setOnClickListener(new View.OnClickListener() {
+        tv_gomap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(et_sp_address.getKeyListener()==variable){
-
-                }
-                else {
                     Intent intent = new Intent(getActivity(), MapActivity.class);
                     startActivity(intent);
-                }
-            }
-        });
-        et_sp_address.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                if(et_sp_address.getKeyListener()==variable) {
-                    et_sp_address.setKeyListener(null);
-                }
-                else{
-                    et_sp_address.setKeyListener(variable);
 
-                }
-                return true;
             }
         });
         iv_pic1.setOnClickListener(new View.OnClickListener() {

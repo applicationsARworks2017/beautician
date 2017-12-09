@@ -18,6 +18,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import beautician.com.sapplication.Activity.IndividualRequest;
+import beautician.com.sapplication.Activity.MyserviceList;
 import beautician.com.sapplication.Activity.SearchShopList;
 import beautician.com.sapplication.Activity.ShopDetails;
 import beautician.com.sapplication.Pojo.Proposals;
@@ -164,7 +165,10 @@ public class ShopListAdapter extends BaseAdapter {
         holder.check_details.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+            Intent intent=new Intent(_context, MyserviceList.class);
+                intent.putExtra("USERID",_pos.getId());
+                intent.putExtra("PAGE","user");
+                _context.startActivity(intent);
             }
         });
 

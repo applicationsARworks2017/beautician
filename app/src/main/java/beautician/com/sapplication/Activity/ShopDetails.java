@@ -59,6 +59,7 @@ public class ShopDetails extends AppCompatActivity {
     }
 
     private void getShopDetails() {
+
         if(CheckInternet.getNetworkConnectivityStatus(ShopDetails.this)){
             shopView();
         }

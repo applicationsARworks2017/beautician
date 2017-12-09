@@ -25,6 +25,7 @@ public class Constants {
     public static String ONLINEURL="http://applicationworld.net/beautician/";
     public static String CATEGORYLIST="categories/index.json";
     public static String CATEGORYLIST_SHOPWISE="ShopDetails/shopListCat";
+    public static String SUBCATEGORYLIST_SHOPWISE="ShopDetails/shopListSubCat";
     public static String SUB_CATEGORYLIST="sub-categories/index.json";
     public static String USER_REGISTRATION="users/add.json";
     public static String SHOP_REGISTRATION="shops/add.json";
@@ -49,6 +50,7 @@ public class Constants {
     public static String INDICISUAL_REQUEST_LIST="service-indivisual-requests/index.json";
     public static String PICURL="http://applicationworld.net/beautician/webroot/files/profile/";
     public static String SHOP_DETAILS="shops/view.json";
+    public static String USER_BALANCE="UserWallets/index.json";
 
 
     public static final String SHAREDPREFERENCE_KEY = "beautician" ;

@@ -22,15 +22,20 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.net.ConnectException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.Calendar;
 
@@ -48,6 +53,7 @@ public class PostActivity extends AppCompatActivity {
     EditText txtDate, txtTime;
     private int mYear, mMonth, mDay, mHour, mMinute;
     DatePickerDialog datePickerDialog;
+    Double balance=0.0;
 
 
     @Override
@@ -69,7 +75,6 @@ public class PostActivity extends AppCompatActivity {
         submit_post.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 AlertDialog.Builder builder = new AlertDialog.Builder(PostActivity.this);
                 builder.setTitle("");
                 builder.setMessage("Your wallet will be deducted with $1 for this post");
@@ -81,7 +86,15 @@ public class PostActivity extends AppCompatActivity {
                             Toast.makeText(PostActivity.this,"Please give Expected Date",Toast.LENGTH_LONG).show();
                         }
                         else {
-                            String postDetails = et_contentheading.getText().toString().trim();
+                            if(CheckInternet.getNetworkConnectivityStatus(PostActivity.this)){
+                                getWdetails getWdetails=new getWdetails();
+                                getWdetails.execute(user_id);
+                            }
+                            else{
+                                Constants.noInternetDialouge(PostActivity.this, "No Internet");
+
+                            }
+                            /*String postDetails = et_contentheading.getText().toString().trim();
                             String numof = adult.getSelectedItem().toString();
                             exp_date = txtDate.getText().toString().trim() + " " + txtTime.getText().toString().trim();
                             if (CheckInternet.getNetworkConnectivityStatus(PostActivity.this)) {
@@ -90,7 +103,7 @@ public class PostActivity extends AppCompatActivity {
                             } else {
                                 Constants.noInternetDialouge(PostActivity.this, "No Internet");
 
-                            }
+                            }*/
                         }
 
 
@@ -295,6 +308,154 @@ remarks:jhgjhghjgjg"
             }
             progressDialog.dismiss();
             Toast.makeText(PostActivity.this,server_message,Toast.LENGTH_SHORT).show();
+        }
+    }
+    /**
+     * Async task to get wallet balance from  camp table from server
+     * */
+    private class getWdetails extends AsyncTask<String, Void, Void> {
+
+        private static final String TAG = "Get Wallet Balance";
+        private ProgressDialog progressDialog = null;
+        int server_status;
+        String server_message;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if(progressDialog == null) {
+                progressDialog = ProgressDialog.show(PostActivity.this, "Loading", "Please wait...");
+            }
+            // onPreExecuteTask();
+        }
+
+        @Override
+        protected Void doInBackground(String... params) {
+
+            try {
+
+                String _userid = params[0];
+                InputStream in = null;
+                int resCode = -1;
+
+                String link = Constants.ONLINEURL+Constants.USER_BALANCE;
+                URL url = new URL(link);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setReadTimeout(10000);
+                conn.setConnectTimeout(15000);
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.setDoOutput(true);
+                conn.setAllowUserInteraction(false);
+                conn.setInstanceFollowRedirects(true);
+                conn.setRequestMethod("POST");
+
+                Uri.Builder builder = new Uri.Builder()
+                        .appendQueryParameter("user_id", _userid);
+
+                //.appendQueryParameter("deviceid", deviceid);
+                String query = builder.build().getEncodedQuery();
+
+                OutputStream os = conn.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(
+                        new OutputStreamWriter(os, "UTF-8"));
+                writer.write(query);
+                writer.flush();
+                writer.close();
+                os.close();
+
+                conn.connect();
+                resCode = conn.getResponseCode();
+                if (resCode == HttpURLConnection.HTTP_OK) {
+                    in = conn.getInputStream();
+                }
+                if(in == null){
+                    return null;
+                }
+                BufferedReader reader =new BufferedReader(new InputStreamReader(in, "UTF-8"));
+                String response = "",data="";
+
+                while ((data = reader.readLine()) != null){
+                    response += data + "\n";
+                }
+
+                Log.i(TAG, "Response : "+response);
+
+                /**
+                 * {
+                 "userWallets": [
+                 {
+                 "id": 7,
+                 "user_id": 10,
+                 "debit": 0,
+                 "credit": 10,
+                 "balance": 10,
+                 "created": "2017-12-03T10:28:29+05:30",
+                 "modified": "2017-12-03T10:28:29+05:30",
+                 "user": {
+                 "id": 10,
+                 "name": "avinash pathak",
+                 "email": "avinasha@yahoo.com",
+                 "mobile": "7205674061",
+                 "photo": null,
+                 "created": "1988-01-23T00:00:00+05:30",
+                 "modified": "1988-01-23T00:00:00+05:30",
+                 "usertype": "test",
+                 "fcm_id": null
+                 }
+                 }
+                 ]
+                 * */
+
+                if(response != null && response.length() > 0) {
+                    JSONObject res = new JSONObject(response.trim());
+                    JSONArray serviceListArray = res.getJSONArray("userWallets");
+                    if(serviceListArray.length()<=0) {
+                        server_status = 0;
+                    }
+                    else{
+                        server_status = 1;
+                        for (int i = 0; i < serviceListArray.length(); i++) {
+                            JSONObject o_list_obj = serviceListArray.getJSONObject(i);
+                            String id = o_list_obj.getString("id");
+                             balance = o_list_obj.getDouble("balance");
+                        }
+                    }
+
+                }
+
+                return null;
+            } catch(Exception exception){
+                Log.e(TAG, "SynchMobnum : doInBackground", exception);
+                server_message="Network Error";
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void user) {
+            super.onPostExecute(user);
+            progressDialog.dismiss();
+            if(server_status==1){
+                if(balance>5.0){
+                    String postDetails = et_contentheading.getText().toString().trim();
+                    String numof = adult.getSelectedItem().toString();
+                    exp_date = txtDate.getText().toString().trim() + " " + txtTime.getText().toString().trim();
+                    if (CheckInternet.getNetworkConnectivityStatus(PostActivity.this)) {
+                        Postservice postservice = new Postservice();
+                        postservice.execute(user_id, CategoriesRequest.catid, RequestSubcategories.SubcateryId, numof, postDetails, exp_date);
+                    } else {
+                        Constants.noInternetDialouge(PostActivity.this, "No Internet");
+
+                    }
+                }
+
+            }
+            else{
+                Constants.noInternetDialouge(PostActivity.this,"Atleast $ 6 is required in your wallet for posting a service");
+            }
+
         }
     }
 }

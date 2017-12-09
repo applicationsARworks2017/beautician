@@ -29,6 +29,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+import beautician.com.sapplication.Adapter.ListSubcategoriesAdapter;
 import beautician.com.sapplication.Adapter.ReqSubcategoriesAdapter;
 import beautician.com.sapplication.Pojo.SubCategoryList;
 import beautician.com.sapplication.R;
@@ -45,7 +46,7 @@ public class MySubcategories extends AppCompatActivity {
     int server_status;
     String server_message;
     TextView blank_text_sc,cattext;
-    ReqSubcategoriesAdapter scadapter;
+    ListSubcategoriesAdapter scadapter;
     RelativeLayout rel_subcategory;
     SearchView searchView_sub_category;
     String shop_id;
@@ -84,11 +85,11 @@ public class MySubcategories extends AppCompatActivity {
             public void onRefresh() {
                 swipe_subcategory.setRefreshing(false);
 
-                if(CheckInternet.getNetworkConnectivityStatus(RequestSubcategories.this)){
-                    new RequestSubcategories.getsubcategoryList().execute();
+                if(CheckInternet.getNetworkConnectivityStatus(MySubcategories.this)){
+                    new getsubcategoryList().execute();
                 }
                 else{
-                    Constants.noInternetDialouge(RequestSubcategories .this,"Kindly Check Your Internet Connection");
+                    Constants.noInternetDialouge(MySubcategories .this,"Kindly Check Your Internet Connection");
                 }
             }
         });
@@ -124,7 +125,7 @@ public class MySubcategories extends AppCompatActivity {
             flatlist_search.addAll(scList);
         }
         // create an Object for Adapter
-        scadapter = new ReqSubcategoriesAdapter(RequestSubcategories.this,flatlist_search );
+        scadapter = new ListSubcategoriesAdapter(MySubcategories.this,flatlist_search );
         lv_subcategory.setAdapter(scadapter);
         //  mAdapter.notifyDataSetChanged();
 
@@ -158,7 +159,7 @@ public class MySubcategories extends AppCompatActivity {
             try {
                 InputStream in = null;
                 int resCode = -1;
-                String link = Constants.ONLINEURL + Constants.SUB_CATEGORYLIST;
+                String link = Constants.ONLINEURL + Constants.SUBCATEGORYLIST_SHOPWISE;
                 URL url = new URL(link);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setReadTimeout(10000);
@@ -171,7 +172,8 @@ public class MySubcategories extends AppCompatActivity {
                 conn.setRequestMethod("POST");
 
                 Uri.Builder builder = new Uri.Builder()
-                        .appendQueryParameter("category_id", CategoriesRequest.catid);
+                        .appendQueryParameter("category_id",MyserviceList.catid)
+                        .appendQueryParameter("shop_id",user_id);
                         /*.appendQueryParameter("shop_id", shop_id)
                         .appendQueryParameter("page", "1");*/
                 String query = builder.build().getEncodedQuery();
@@ -220,7 +222,7 @@ public class MySubcategories extends AppCompatActivity {
                     JSONObject res = new JSONObject(response.trim());
                     // server_status=res.getInt("status");
                     scList.clear();
-                    JSONArray categoryListArray = res.getJSONArray("subCategories");
+                    JSONArray categoryListArray = res.getJSONArray("SubCategories");
                     if(categoryListArray.length()<=0){
                         server_message="No Data Found";
 
@@ -231,7 +233,7 @@ public class MySubcategories extends AppCompatActivity {
                             JSONObject o_list_obj = categoryListArray.getJSONObject(i);
                             String id = o_list_obj.getString("id");
                             String subcategory = o_list_obj.getString("title");
-                            String category_id = o_list_obj.getString("category_id");
+                           // String category_id = o_list_obj.getString("category_id");
                             SubCategoryList list1 = new SubCategoryList(id,subcategory,category_id);
                             scList.add(list1);
                         }
@@ -250,7 +252,7 @@ public class MySubcategories extends AppCompatActivity {
         protected void onPostExecute(Void data) {
             super.onPostExecute(data);
             if(server_status==1) {
-                scadapter = new ReqSubcategoriesAdapter(RequestSubcategories.this,scList );
+                scadapter = new ListSubcategoriesAdapter(MySubcategories.this,scList );
                 lv_subcategory.setAdapter(scadapter);
             }
             else{
@@ -270,4 +272,4 @@ public class MySubcategories extends AppCompatActivity {
         finish();
     }
 }
-}
+

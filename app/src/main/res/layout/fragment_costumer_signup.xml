@@ -78,7 +78,6 @@
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:maxLength="10"
                         android:inputType="phone"
                         android:singleLine="true"
                         android:hint="Phone"
@@ -134,7 +133,6 @@
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:maxLength="10"
                         android:id="@+id/et_user_pass"
                         android:inputType="textPassword"
                         android:singleLine="true"
@@ -162,7 +160,6 @@
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:maxLength="10"
                         android:inputType="textPassword"
                         android:singleLine="true"
                         android:hint="Confirm"
