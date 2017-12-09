@@ -54,6 +54,7 @@ public class PostActivity extends AppCompatActivity {
     private int mYear, mMonth, mDay, mHour, mMinute;
     DatePickerDialog datePickerDialog;
     Double balance=0.0;
+    private ProgressDialog progressDialog = null;
 
 
     @Override
@@ -189,7 +190,6 @@ remarks:jhgjhghjgjg"
 
         private static final String TAG = "SynchMobnum";
         String server_message;
-        private ProgressDialog progressDialog = null;
 
         int server_status;
 
@@ -300,14 +300,9 @@ remarks:jhgjhghjgjg"
         protected void onPostExecute(Void user) {
             super.onPostExecute(user);
             if (server_status == 1) {
-                Intent intent = new Intent(PostActivity.this, HomeActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                startActivity(intent);
+                Transactwallet transactwallet=new Transactwallet();
+                transactwallet.execute(user_id,"0",String.valueOf(balance-1),"1");
             }
-            progressDialog.dismiss();
-            Toast.makeText(PostActivity.this,server_message,Toast.LENGTH_SHORT).show();
         }
     }
     /**
@@ -445,6 +440,7 @@ remarks:jhgjhghjgjg"
                     if (CheckInternet.getNetworkConnectivityStatus(PostActivity.this)) {
                         Postservice postservice = new Postservice();
                         postservice.execute(user_id, CategoriesRequest.catid, RequestSubcategories.SubcateryId, numof, postDetails, exp_date);
+
                     } else {
                         Constants.noInternetDialouge(PostActivity.this, "No Internet");
 
@@ -456,6 +452,117 @@ remarks:jhgjhghjgjg"
                 Constants.noInternetDialouge(PostActivity.this,"Atleast $ 6 is required in your wallet for posting a service");
             }
 
+        }
+    }
+    /**
+     *
+     * Async task to Update the wallet
+     * */
+    private class Transactwallet extends AsyncTask<String, Void, Void> {
+
+        private static final String TAG = "update wallet";
+        int server_status;
+        String server_message;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+        @Override
+        protected Void doInBackground(String... params) {
+
+            try {
+                String _userid = params[0];
+                String _recharge_amount = params[1];
+                String _debit_amount = params[3];
+                String _balance_amount = params[2];
+                InputStream in = null;
+                int resCode = -1;
+
+                String link = Constants.ONLINEURL+Constants.USER_WALLLET_UPDATE;
+                URL url = new URL(link);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setReadTimeout(10000);
+                conn.setConnectTimeout(15000);
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.setDoOutput(true);
+                conn.setAllowUserInteraction(false);
+                conn.setInstanceFollowRedirects(true);
+                conn.setRequestMethod("POST");
+                Uri.Builder builder = new Uri.Builder()
+                        .appendQueryParameter("user_id", _userid)
+                        .appendQueryParameter("debit", _debit_amount)
+                        .appendQueryParameter("credit", _recharge_amount)
+                        .appendQueryParameter("balance", _balance_amount);
+
+                //.appendQueryParameter("deviceid", deviceid);
+                String query = builder.build().getEncodedQuery();
+
+                OutputStream os = conn.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(
+                        new OutputStreamWriter(os, "UTF-8"));
+                writer.write(query);
+                writer.flush();
+                writer.close();
+                os.close();
+
+                conn.connect();
+                resCode = conn.getResponseCode();
+                if (resCode == HttpURLConnection.HTTP_OK) {
+                    in = conn.getInputStream();
+                }
+                if(in == null){
+                    return null;
+                }
+                BufferedReader reader =new BufferedReader(new InputStreamReader(in, "UTF-8"));
+                String response = "",data="";
+
+                while ((data = reader.readLine()) != null){
+                    response += data + "\n";
+                }
+
+                Log.i(TAG, "Response : "+response);
+
+                /**
+                 * {
+                 "status": 1,
+                 "message": "Data inserted successfully"
+                 }
+                 * */
+
+                if(response != null && response.length() > 0) {
+                    JSONObject res = new JSONObject(response.trim());
+                    server_status = res.optInt("status");
+                    if(server_status==1) {
+                        server_message="Wallet Updated";
+                    }
+                    else{
+                        server_message="Wallet can't be Updated";
+
+                    }
+                }
+
+                return null;
+            } catch(Exception exception){
+                server_message="Wallet error";
+                Log.e(TAG, "SynchMobnum : doInBackground", exception);
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void user) {
+            super.onPostExecute(user);
+            progressDialog.dismiss();
+            if(server_status==1){
+                Intent intent = new Intent(PostActivity.this, HomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+                Toast.makeText(PostActivity.this,"Request Posted and Wallet debited with $ 1",Toast.LENGTH_LONG).show();
+            }
         }
     }
 }

@@ -51,6 +51,7 @@ public class Constants {
     public static String PICURL="http://applicationworld.net/beautician/webroot/files/profile/";
     public static String SHOP_DETAILS="shops/view.json";
     public static String USER_BALANCE="UserWallets/index.json";
+    public static String USER_WALLLET_UPDATE="UserWallets/add.json";
 
 
     public static final String SHAREDPREFERENCE_KEY = "beautician" ;
