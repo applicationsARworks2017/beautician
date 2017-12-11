@@ -300,6 +300,8 @@ remarks:jhgjhghjgjg"
         protected void onPostExecute(Void user) {
             super.onPostExecute(user);
             if (server_status == 1) {
+              //  Toast.makeText(PostActivity.this,"Hello",Toast.LENGTH_LONG).show();
+
                 Transactwallet transactwallet=new Transactwallet();
                 transactwallet.execute(user_id,"0",String.valueOf(balance-1),"1");
             }
@@ -461,7 +463,7 @@ remarks:jhgjhghjgjg"
     private class Transactwallet extends AsyncTask<String, Void, Void> {
 
         private static final String TAG = "update wallet";
-        int server_status;
+        int wallet_status;
         String server_message;
         @Override
         protected void onPreExecute() {
@@ -532,14 +534,16 @@ remarks:jhgjhghjgjg"
 
                 if(response != null && response.length() > 0) {
                     JSONObject res = new JSONObject(response.trim());
-                    server_status = res.optInt("status");
-                    if(server_status==1) {
+                    JSONObject j_obj=res.getJSONObject("res");
+                    wallet_status = j_obj.optInt("status");
+                    if(wallet_status==1) {
                         server_message="Wallet Updated";
                     }
                     else{
                         server_message="Wallet can't be Updated";
 
                     }
+
                 }
 
                 return null;
@@ -555,13 +559,14 @@ remarks:jhgjhghjgjg"
         protected void onPostExecute(Void user) {
             super.onPostExecute(user);
             progressDialog.dismiss();
-            if(server_status==1){
+            if(wallet_status==1){
+                //Toast.makeText(PostActivity.this,"Hello",Toast.LENGTH_LONG).show();
+                Toast.makeText(PostActivity.this,"Request Posted and Wallet debited with $ 1",Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(PostActivity.this, HomeActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
-                Toast.makeText(PostActivity.this,"Request Posted and Wallet debited with $ 1",Toast.LENGTH_LONG).show();
             }
         }
     }

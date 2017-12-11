@@ -153,10 +153,10 @@ public class PropsalAdapter extends BaseAdapter {
                 DrawableCompat.setTint(drawable1, _context.getResources().getColor(R.color.deep_background));
                 holder.im_agree.setImageDrawable(drawable1);
             }
-            else if(status.contentEquals("4")){
+            else if(status.contentEquals("4")){ // otp given service is going on
                 holder.gv_feedback.setVisibility(View.VISIBLE);
                 Resources ress = _context.getResources();
-                Drawable drawable1 = ress.getDrawable(R.mipmap.ic_done_all_white_24dp);
+                Drawable drawable1 = ress.getDrawable(R.mipmap.ic_power_input_white_24dp);
                 drawable1 = DrawableCompat.wrap(drawable1);
                 DrawableCompat.setTint(drawable1, _context.getResources().getColor(R.color.colorPrimary));
                 holder.im_agree.setImageDrawable(drawable1);
@@ -198,9 +198,9 @@ public class PropsalAdapter extends BaseAdapter {
                 DrawableCompat.setTint(drawable1, _context.getResources().getColor(R.color.colorPrimary));
                 holder.im_reply.setImageDrawable(drawable1);
             }
-            else if(status.contentEquals("4")){ // completed
+            else if(status.contentEquals("4")){ // service started and otp submitted
                 Resources ress = _context.getResources();
-                Drawable drawable1 = ress.getDrawable(R.mipmap.ic_done_all_white_24dp);
+                Drawable drawable1 = ress.getDrawable(R.mipmap.ic_power_input_white_24dp);
                 drawable1 = DrawableCompat.wrap(drawable1);
                 DrawableCompat.setTint(drawable1, _context.getResources().getColor(R.color.colorPrimary));
                 holder.im_reply.setImageDrawable(drawable1);
@@ -288,9 +288,9 @@ public class PropsalAdapter extends BaseAdapter {
                         public void onClick(DialogInterface dialog, int id) {
                             //TODO
                             //   dialog.dismiss();
-                            Toast.makeText(_context,"Insufficient wallet balance",Toast.LENGTH_SHORT).show();
-                           /* ConfirmToProp confirmToProp = new ConfirmToProp();
-                            confirmToProp.execute(_pos.getId(), finalCallTo);*/
+                            //Toast.makeText(_context,"Insufficient wallet balance",Toast.LENGTH_SHORT).show();
+                            ConfirmToProp confirmToProp = new ConfirmToProp();
+                            confirmToProp.execute(_pos.getId(), finalCallTo);
 
                         }
                     });
